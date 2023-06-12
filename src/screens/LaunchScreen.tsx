@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import designToken from '../assets/design-tokens';
-import Button from '../components/Button';
+import CustomButton from '../components/Button';
 function LaunchScreen(): JSX.Element {
   return (
     <View style={style.wrap}>
@@ -10,8 +10,8 @@ function LaunchScreen(): JSX.Element {
         <Text style={style.logoText}>JJAMMATE</Text>
       </View>
       <View style={style.btnWrap}>
-        <Button title="회원가입" activate={true} />
-        <Button
+        <CustomButton title="회원가입" activate={true} />
+        <CustomButton
           title="로그인"
           activate={true}
           activateStyle={style.loginButton}

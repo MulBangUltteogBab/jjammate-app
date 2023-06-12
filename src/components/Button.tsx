@@ -1,13 +1,22 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import designToken from '../assets/design-tokens';
-const Button = ({
+import Headline1 from './text/Headline1';
+
+type CustomButtonProps = {
+  onPress?: () => void;
+  title?: String;
+  activate?: Boolean;
+  activateStyle?: ViewStyle;
+  titleColor?: string;
+};
+const CustomButton = ({
   onPress,
   title,
   activate = false,
   activateStyle,
   titleColor,
-}: any) => {
+}: CustomButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -17,17 +26,16 @@ const Button = ({
         style.btn,
         activateStyle,
       ]}>
-      <Text
-        style={[
-          titleColor
-            ? {color: titleColor}
+      <Headline1
+        style={{
+          color: titleColor
+            ? titleColor
             : activate
-            ? {color: designToken.color.Grary.White}
-            : {color: designToken.color.Grary.Gray700},
-          style.title,
-        ]}>
+            ? designToken.color.Grary.White
+            : designToken.color.Grary.Gray700,
+        }}>
         {title}
-      </Text>
+      </Headline1>
     </TouchableOpacity>
   );
 };
@@ -52,4 +60,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default Button;
+export default CustomButton;
