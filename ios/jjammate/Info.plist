@@ -39,21 +39,21 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>GmarketSansTTFBold.ttf</string>
-		<string>GmarketSansTTFLight.ttf</string>
-		<string>GmarketSansTTFMedium.ttf</string>
-		<string>SUIT-Bold.ttf</string>
-		<string>SUIT-ExtraBold.ttf</string>
-		<string>SUIT-ExtraLight.ttf</string>
-		<string>SUIT-Heavy.ttf</string>
-		<string>SUIT-Light.ttf</string>
-		<string>SUIT-Medium.ttf</string>
-		<string>SUIT-Regular.ttf</string>
-		<string>SUIT-SemiBold.ttf</string>
-		<string>SUIT-Thin.ttf</string>
+		<string>Fonts/GmarketSansTTFBold.ttf</string>
+		<string>Fonts/GmarketSansTTFLight.ttf</string>
+		<string>Fonts/GmarketSansTTFMedium.ttf</string>
+		<string>Fonts/SUIT-Bold.ttf</string>
+		<string>Fonts/SUIT-ExtraBold.ttf</string>
+		<string>Fonts/SUIT-ExtraLight.ttf</string>
+		<string>Fonts/SUIT-Heavy.ttf</string>
+		<string>Fonts/SUIT-Light.ttf</string>
+		<string>Fonts/SUIT-Medium.ttf</string>
+		<string>Fonts/SUIT-Regular.ttf</string>
+		<string>Fonts/SUIT-SemiBold.ttf</string>
+		<string>Fonts/SUIT-Thin.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>BootSplash.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

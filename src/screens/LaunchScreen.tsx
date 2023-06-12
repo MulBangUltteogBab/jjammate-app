@@ -2,7 +2,8 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import designToken from '../assets/design-tokens';
 import CustomButton from '../components/CustomButton';
-function LaunchScreen(): JSX.Element {
+
+function LaunchScreen({navigation}: any): JSX.Element {
   return (
     <View style={style.wrap}>
       <View style={style.logoWrap}>
@@ -16,6 +17,9 @@ function LaunchScreen(): JSX.Element {
           activate={true}
           activateStyle={style.loginButton}
           titleColor={designToken.color.Grary.Gray700}
+          onPress={() => {
+            navigation.navigate('LoginScreen');
+          }}
         />
       </View>
     </View>

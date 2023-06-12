@@ -33,6 +33,7 @@ const CustomButton = ({
             : activate
             ? designToken.color.Grary.White
             : designToken.color.Grary.Gray700,
+          textAlign: 'center',
         }}>
         {title}
       </Headline1>
