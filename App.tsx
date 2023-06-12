@@ -6,26 +6,23 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView} from 'react-native';
+import LaunchScreen from './src/screens/LaunchScreen';
+import {setCustomText} from 'react-native-global-props';
 
 function App(): JSX.Element {
+  const customTextProps = {
+    style: {
+      fontFamily: 'SUIT-Regular',
+    },
+  };
+  setCustomText(customTextProps);
+
   return (
     <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" />
+      <LaunchScreen />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
