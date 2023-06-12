@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import designToken from '../assets/design-tokens';
-import CustomButton from '../components/Button';
+import CustomButton from '../components/CustomButton';
 function LaunchScreen(): JSX.Element {
   return (
     <View style={style.wrap}>
