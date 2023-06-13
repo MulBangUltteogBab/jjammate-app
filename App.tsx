@@ -8,6 +8,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import RNBootSplash from 'react-native-bootsplash';
+import 'react-native-gesture-handler';
 
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
@@ -16,6 +17,7 @@ import {setCustomText} from 'react-native-global-props';
 import {RecoilRoot} from 'recoil';
 import LoginScreen from './src/screens/LoginScreen';
 import designToken from './src/assets/design-tokens';
+import RegisterScreen from './src/screens/Register/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +62,7 @@ function App(): JSX.Element {
             }}>
             <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

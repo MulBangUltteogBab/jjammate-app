@@ -11,7 +11,13 @@ function LaunchScreen({navigation}: any): JSX.Element {
         <Text style={style.logoText}>JJAMMATE</Text>
       </View>
       <View style={style.btnWrap}>
-        <CustomButton title="회원가입" activate={true} />
+        <CustomButton
+          title="회원가입"
+          activate={true}
+          onPress={() => {
+            navigation.navigate('RegisterScreen');
+          }}
+        />
         <CustomButton
           title="로그인"
           activate={true}
