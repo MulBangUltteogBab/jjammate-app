@@ -5,15 +5,25 @@ import CheckBoxOff from '../assets/icons/checkbox-off.svg';
 import {NumberProp} from 'react-native-svg';
 interface CheckBoxProps {
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  size: NumberProp | undefined;
+  setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
+  size?: NumberProp | undefined;
+  onChange?: () => void;
 }
 
-const CheckBox = ({checked, setChecked, size}: CheckBoxProps) => {
+const CheckBox = ({
+  checked,
+  setChecked,
+  size = 16,
+  onChange,
+}: CheckBoxProps) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        setChecked(!checked);
+        if (setChecked) {
+          setChecked(!checked);
+        } else if (onChange) {
+          onChange();
+        }
       }}>
       {checked ? (
         <CheckBoxOn height={size} width={size} />

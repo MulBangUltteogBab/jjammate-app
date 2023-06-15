@@ -18,13 +18,25 @@ import {RecoilRoot} from 'recoil';
 import LoginScreen from './src/screens/LoginScreen';
 import designToken from './src/assets/design-tokens';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
-
+import {
+  DefaultTheme as PaperDefaultThme,
+  Provider as PaperProvider,
+} from 'react-native-paper';
 const Stack = createNativeStackNavigator();
 
 const Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    background: designToken.color.Grary.White,
+    primary: designToken.color.Green,
+  },
+};
+
+const ThemePaper = {
+  ...PaperDefaultThme,
+  colors: {
+    ...PaperDefaultThme.colors,
     background: designToken.color.Grary.White,
     primary: designToken.color.Green,
   },
@@ -50,23 +62,25 @@ function App(): JSX.Element {
   setCustomText(customTextProps);
 
   return (
-    <RecoilRoot>
-      <SafeAreaView style={{height: '100%'}}>
-        <NavigationContainer theme={Theme}>
-          <Stack.Navigator
-            initialRouteName="LaunchScreen"
-            screenOptions={{
-              headerShown: false,
-              animation: 'fade',
-              headerShadowVisible: false,
-            }}>
-            <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </RecoilRoot>
+    <PaperProvider theme={ThemePaper}>
+      <RecoilRoot>
+        <SafeAreaView style={{height: '100%'}}>
+          <NavigationContainer theme={Theme}>
+            <Stack.Navigator
+              initialRouteName="LaunchScreen"
+              screenOptions={{
+                headerShown: false,
+                animation: 'fade',
+                headerShadowVisible: false,
+              }}>
+              <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
+              <Stack.Screen name="LoginScreen" component={LoginScreen} />
+              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </RecoilRoot>
+    </PaperProvider>
   );
 }
 

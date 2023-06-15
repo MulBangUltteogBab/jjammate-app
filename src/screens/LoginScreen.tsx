@@ -16,7 +16,7 @@ function LoginScreen(): JSX.Element {
   const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
   return (
     <View style={style.container}>
-      <Header title="로그인" />
+      <Header title="로그인" marginBottom={23} />
       <Wrap style={{gap: 12}}>
         <CustomInput
           placeholder="군번"

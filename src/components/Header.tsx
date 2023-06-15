@@ -6,12 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import designToken from '../assets/design-tokens';
 import BackImage from '../assets/icons/back.svg';
 
-const Header = ({
-  title = ' ',
-  wrap = true,
-  marginBottom = 23,
-  onPress,
-}: any) => {
+const Header = ({title = ' ', wrap = true, marginBottom = 0, onPress}: any) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {

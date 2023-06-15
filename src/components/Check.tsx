@@ -4,14 +4,19 @@ import CheckOn from '../assets/icons/check-on.svg';
 import CheckOff from '../assets/icons/check-off.svg';
 interface CheckProps {
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
+  onChange?: () => void;
 }
 
-const Check = ({checked, setChecked}: CheckProps) => {
+const Check = ({checked, setChecked, onChange}: CheckProps) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        setChecked(!checked);
+        if (setChecked) {
+          setChecked(!checked);
+        } else if (onChange) {
+          onChange();
+        }
       }}>
       {checked ? <CheckOn /> : <CheckOff />}
     </TouchableOpacity>
