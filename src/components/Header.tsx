@@ -6,15 +6,22 @@ import {useNavigation} from '@react-navigation/native';
 import designToken from '../assets/design-tokens';
 import BackImage from '../assets/icons/back.svg';
 
-const Header = ({title}: any) => {
+const Header = ({title = ' ', wrap = true, marginBottom = 0, onPress}: any) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
     navigation.goBack(); // 뒤로가기 동작
   };
   return (
-    <Wrap style={style.wrap}>
-      <TouchableOpacity onPress={handleGoBack} style={style.backButton}>
+    <Wrap
+      style={{
+        ...style.wrap,
+        marginBottom: marginBottom,
+        width: !wrap ? '100%' : '90%',
+      }}>
+      <TouchableOpacity
+        onPress={onPress ? onPress : handleGoBack}
+        style={style.backButton}>
         <BackImage />
       </TouchableOpacity>
       {title && <Title3 style={style.title}>{title}</Title3>}
@@ -27,7 +34,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // height: 56,
-    marginBottom: 23,
+    // marginBottom: 23,
   },
   container: {
     width: '90%',
