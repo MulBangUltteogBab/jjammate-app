@@ -2,6 +2,8 @@ const designToken = {
   color: {
     Green: '#21c389',
     Red: '#ff4d4d',
+    Blue: '#507EF7',
+    Pink: '#EF8EDF',
     Grary: {
       White: '#ffffff',
       Gray100: '#f4f6f8',

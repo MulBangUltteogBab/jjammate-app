@@ -13,7 +13,7 @@ const defaultStyle = StyleSheet.create({
   defaultStyle: {
     letterSpacing: 1,
     fontFamily: 'SUIT-Bold',
-    fontSize: 16,
+    fontSize: 18,
   },
 });
 

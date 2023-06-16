@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Wrap from '../../components/Wrap';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -33,7 +33,7 @@ function RegisterScreen({navigation}: any): JSX.Element {
   }, [index, navigation, route]);
 
   return (
-    <View style={{height: '100%'}}>
+    <SafeAreaView style={{height: '100%'}}>
       <Header
         marginBottom={32}
         onPress={() => {
@@ -115,7 +115,7 @@ function RegisterScreen({navigation}: any): JSX.Element {
           activate={isReady[index]}
         />
       </Wrap>
-    </View>
+    </SafeAreaView>
   );
 }
 

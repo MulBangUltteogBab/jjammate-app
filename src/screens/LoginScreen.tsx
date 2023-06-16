@@ -1,4 +1,4 @@
-import {StyleSheet, TouchableHighlight, View} from 'react-native';
+import {SafeAreaView, StyleSheet, TouchableHighlight, View} from 'react-native';
 import React, {useState} from 'react';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
@@ -15,7 +15,7 @@ function LoginScreen(): JSX.Element {
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
   return (
-    <View style={style.container}>
+    <SafeAreaView style={style.container}>
       <Header title="로그인" marginBottom={23} />
       <Wrap style={{gap: 12}}>
         <CustomInput
@@ -47,7 +47,7 @@ function LoginScreen(): JSX.Element {
         <CustomButton title="로그인" activate={id !== '' && password !== ''} />
         <View style={{height: 17}} />
       </Wrap>
-    </View>
+    </SafeAreaView>
   );
 }
 

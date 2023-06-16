@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TextProps} from 'react-native';
+import designToken from '../../assets/design-tokens';
 
 const Body2 = (props: TextProps) => {
   return (
@@ -14,6 +15,7 @@ const defaultStyle = StyleSheet.create({
     letterSpacing: 0.87,
     fontFamily: 'SUIT-Regular',
     fontSize: 14,
+    color: designToken.color.Grary.Gray700,
   },
 });
 

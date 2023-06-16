@@ -11,7 +11,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import 'react-native-gesture-handler';
 
 import React, {useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import LaunchScreen from './src/screens/LaunchScreen';
 import {setCustomText} from 'react-native-global-props';
 import {RecoilRoot} from 'recoil';
@@ -22,6 +22,7 @@ import {
   DefaultTheme as PaperDefaultThme,
   Provider as PaperProvider,
 } from 'react-native-paper';
+import MainScreen from './src/screens/MainScreen';
 const Stack = createNativeStackNavigator();
 
 const Theme = {
@@ -64,10 +65,11 @@ function App(): JSX.Element {
   return (
     <PaperProvider theme={ThemePaper}>
       <RecoilRoot>
-        <SafeAreaView style={{height: '100%'}}>
+        <View style={{height: '100%'}}>
           <NavigationContainer theme={Theme}>
             <Stack.Navigator
-              initialRouteName="LaunchScreen"
+              // initialRouteName="LaunchScreen"
+              initialRouteName="MainScreen"
               screenOptions={{
                 headerShown: false,
                 animation: 'fade',
@@ -76,9 +78,10 @@ function App(): JSX.Element {
               <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+              <Stack.Screen name="MainScreen" component={MainScreen} />
             </Stack.Navigator>
           </NavigationContainer>
-        </SafeAreaView>
+        </View>
       </RecoilRoot>
     </PaperProvider>
   );
