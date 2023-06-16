@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
-import designToken from '../assets/design-tokens';
-import Headline1 from './text/Headline1';
+import designToken from '../../assets/design-tokens';
+import Headline1 from '../text/Headline1';
 
 type CustomButtonProps = {
   onPress?: () => void;

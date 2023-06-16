@@ -1,11 +1,11 @@
 import {SafeAreaView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Wrap from '../../components/Wrap';
+import Wrap from '../../components/common/Wrap';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createStackNavigator} from '@react-navigation/stack';
-import Header from '../../components/Header';
+import Header from '../../components/common/Header';
 import RegisterAgreeScreen from './RegisterAgreeScreen';
-import CustomButton from '../../components/CustomButton';
+import CustomButton from '../../components/common/CustomButton';
 import RegisterInfoScreen from './RegisterInfoScreen';
 import RegisterInputScreen, {InfoType} from './RegisterInputScreen';
 import {useRecoilValue} from 'recoil';

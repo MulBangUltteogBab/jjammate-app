@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import designToken from '../assets/design-tokens';
+import designToken from '../../assets/design-tokens';
 
 interface Props extends TextInputProps {
   right?: ReactNode;

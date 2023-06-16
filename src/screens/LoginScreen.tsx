@@ -1,12 +1,12 @@
 import {SafeAreaView, StyleSheet, TouchableHighlight, View} from 'react-native';
 import React, {useState} from 'react';
-import CustomButton from '../components/CustomButton';
-import CustomInput from '../components/CustomInput';
-import Wrap from '../components/Wrap';
-import Header from '../components/Header';
+import CustomButton from '../components/common/CustomButton';
+import CustomInput from '../components/common/CustomInput';
+import Wrap from '../components/common/Wrap';
+import Header from '../components/common/Header';
 import Caption from '../components/text/Caption';
 import designToken from '../assets/design-tokens';
-import CheckBox from '../components/CheckBox';
+import CheckBox from '../components/common/CheckBox';
 import {autoLoginState} from '../states/setting';
 import {useRecoilState} from 'recoil';
 

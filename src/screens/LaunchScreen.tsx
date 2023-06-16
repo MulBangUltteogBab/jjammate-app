@@ -1,7 +1,7 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import designToken from '../assets/design-tokens';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/common/CustomButton';
 
 function LaunchScreen({navigation}: any): JSX.Element {
   return (

@@ -2,7 +2,7 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import Title1 from '../../components/text/Title1';
-import CustomInput from '../../components/CustomInput';
+import CustomInput from '../../components/common/CustomInput';
 import {useRecoilState} from 'recoil';
 import {isReadyAtom, registerInfoAtom} from '../../states/register';
 import {HelperText} from 'react-native-paper';

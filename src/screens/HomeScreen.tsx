@@ -3,7 +3,7 @@ import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import designToken from '../assets/design-tokens';
 import BellIcon from '../assets/icons/bell.svg';
-import Wrap from '../components/Wrap';
+import Wrap from '../components/common/Wrap';
 import LargeTitle from '../components/text/LargeTitle';
 import HomeLogo from '../assets/icons/home-logo.svg';
 import Caption from '../components/text/Caption';

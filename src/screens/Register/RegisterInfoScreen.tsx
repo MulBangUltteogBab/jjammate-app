@@ -4,7 +4,7 @@ import React, {useEffect, useRef} from 'react';
 import Title1 from '../../components/text/Title1';
 import Body2 from '../../components/text/Body2';
 import designToken from '../../assets/design-tokens';
-import CustomInput from '../../components/CustomInput';
+import CustomInput from '../../components/common/CustomInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useRecoilState, useSetRecoilState} from 'recoil';
 import {isReadyAtom, registerInfoAtom} from '../../states/register';
