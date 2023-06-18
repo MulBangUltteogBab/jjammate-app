@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import CheckBox from '../../components/CheckBox';
+import CheckBox from '../../components/common/CheckBox';
 import Headline1 from '../../components/text/Headline1';
 import Title1 from '../../components/text/Title1';
-import Check from '../../components/Check';
+import Check from '../../components/common/Check';
 import Body2 from '../../components/text/Body2';
 import {useRecoilState, useSetRecoilState} from 'recoil';
 import {isReadyAtom, registerAgreeAtom} from '../../states/register';

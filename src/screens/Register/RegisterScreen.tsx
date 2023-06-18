@@ -1,11 +1,11 @@
-import {View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Wrap from '../../components/Wrap';
+import Wrap from '../../components/common/Wrap';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createStackNavigator} from '@react-navigation/stack';
-import Header from '../../components/Header';
+import Header from '../../components/common/Header';
 import RegisterAgreeScreen from './RegisterAgreeScreen';
-import CustomButton from '../../components/CustomButton';
+import CustomButton from '../../components/common/CustomButton';
 import RegisterInfoScreen from './RegisterInfoScreen';
 import RegisterInputScreen, {InfoType} from './RegisterInputScreen';
 import {useRecoilValue} from 'recoil';
@@ -33,7 +33,7 @@ function RegisterScreen({navigation}: any): JSX.Element {
   }, [index, navigation, route]);
 
   return (
-    <View style={{height: '100%'}}>
+    <SafeAreaView style={{height: '100%'}}>
       <Header
         marginBottom={32}
         onPress={() => {
@@ -115,7 +115,7 @@ function RegisterScreen({navigation}: any): JSX.Element {
           activate={isReady[index]}
         />
       </Wrap>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import CheckOn from '../assets/icons/check-on.svg';
-import CheckOff from '../assets/icons/check-off.svg';
+import CheckOn from '../../assets/icons/check-on.svg';
+import CheckOff from '../../assets/icons/check-off.svg';
 interface CheckProps {
   checked: boolean;
   setChecked?: React.Dispatch<React.SetStateAction<boolean>>;

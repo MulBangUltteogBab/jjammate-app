@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import Title3 from './text/Title3';
+import Title3 from '../text/Title3';
 import Wrap from './Wrap';
 import {useNavigation} from '@react-navigation/native';
-import designToken from '../assets/design-tokens';
-import BackImage from '../assets/icons/back.svg';
+import designToken from '../../assets/design-tokens';
+import BackImage from '../../assets/icons/back.svg';
 
 const Header = ({title = ' ', wrap = true, marginBottom = 0, onPress}: any) => {
   const navigation = useNavigation();

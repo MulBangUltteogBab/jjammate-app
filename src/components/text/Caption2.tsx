@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TextProps} from 'react-native';
-import designToken from '../../assets/design-tokens';
 
-const Body2 = (props: TextProps) => {
+const Caption2 = (props: TextProps) => {
   return (
     <Text {...props} style={[defaultStyle.defaultStyle, props.style]}>
       {props.children}
@@ -12,11 +11,10 @@ const Body2 = (props: TextProps) => {
 
 const defaultStyle = StyleSheet.create({
   defaultStyle: {
-    letterSpacing: 0.87,
+    letterSpacing: 0.75,
     fontFamily: 'SUIT-Regular',
-    fontSize: 14,
-    color: designToken.color.Grary.Gray700,
+    fontSize: 10,
   },
 });
 
-export default Body2;
+export default Caption2;

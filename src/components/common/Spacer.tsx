@@ -1,8 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import {NumberProp} from 'react-native-svg';
 
-const Spacer = (height: NumberProp) => {
+const Spacer = (height: number) => {
   return <View style={{height: height}} />;
 };
 

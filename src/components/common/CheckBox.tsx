@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import CheckBoxOn from '../assets/icons/checkbox-on.svg';
-import CheckBoxOff from '../assets/icons/checkbox-off.svg';
+import CheckBoxOn from '../../assets/icons/checkbox-on.svg';
+import CheckBoxOff from '../../assets/icons/checkbox-off.svg';
 import {NumberProp} from 'react-native-svg';
 interface CheckBoxProps {
   checked: boolean;

@@ -1,11 +1,11 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import designToken from '../assets/design-tokens';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/common/CustomButton';
 
 function LaunchScreen({navigation}: any): JSX.Element {
   return (
-    <View style={style.wrap}>
+    <SafeAreaView style={style.wrap}>
       <View style={style.logoWrap}>
         <Image source={require('../assets/images/logo.png')} />
         <Text style={style.logoText}>JJAMMATE</Text>
@@ -28,7 +28,7 @@ function LaunchScreen({navigation}: any): JSX.Element {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
