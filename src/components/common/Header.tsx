@@ -6,7 +6,22 @@ import {useNavigation} from '@react-navigation/native';
 import designToken from '../../assets/design-tokens';
 import BackImage from '../../assets/icons/back.svg';
 
-const Header = ({title = ' ', wrap = true, marginBottom = 0, onPress}: any) => {
+type HeaderProps = {
+  // 헤더 텍스트 내용
+  title?: string;
+  // 너비 화면의 90%로 조정
+  wrap?: boolean;
+  // 아래 마진값
+  marginBottom?: number;
+  // 눌렀을 시 콜백함수
+  onPress?: any;
+};
+const Header = ({
+  title = ' ',
+  wrap = true,
+  marginBottom = 0,
+  onPress,
+}: HeaderProps) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {

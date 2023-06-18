@@ -4,10 +4,15 @@ import designToken from '../../assets/design-tokens';
 import Headline1 from '../text/Headline1';
 
 type CustomButtonProps = {
+  // 눌렀을때 콜백
   onPress?: () => void;
+  // 버튼 텍스트
   title?: String;
+  // 버튼 활성화
   activate?: Boolean;
+  // 커스텀 활성화 스타일
   activateStyle?: ViewStyle;
+  // 버튼 텍스트 색
   titleColor?: string;
 };
 const CustomButton = ({

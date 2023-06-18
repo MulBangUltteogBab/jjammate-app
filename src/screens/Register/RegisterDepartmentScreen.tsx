@@ -9,6 +9,7 @@ import {HelperText} from 'react-native-paper';
 import designToken from '../../assets/design-tokens';
 import SearchIcon from '../../assets/icons/search.svg';
 import Body2 from '../../components/text/Body2';
+
 type RegisterDepartmentScreenProps = {
   index: number;
   route: any;
@@ -25,9 +26,13 @@ function RegisterDepartmentScreen({
   route,
   navigation,
 }: RegisterDepartmentScreenProps): JSX.Element {
+  // 유저 정보 상태
   const [userInfo, setUserInfo] = useRecoilState(registerInfoAtom);
+  // 각 페이지 완료 상태
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
+  // textInput 값
   const [department, setDepartment] = useState('');
+  // 부대 리스트
   const [dataList, setDataList] = useState<Department[]>([
     {id: 0, name: '계룡'},
     {id: 1, name: '계룡1'},

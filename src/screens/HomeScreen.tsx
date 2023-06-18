@@ -15,6 +15,7 @@ import NutrientRatio from '../components/nutrition/NutrientRatio';
 import PxRecommend from '../components/nutrition/PxRecommend';
 
 function HomeScreen(): JSX.Element {
+  // 노치 같은 영역 너비, 높이 받기
   const insets = useSafeAreaInsets();
 
   return (

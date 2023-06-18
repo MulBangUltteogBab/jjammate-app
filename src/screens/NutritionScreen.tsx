@@ -26,7 +26,9 @@ import PlusIcon from '../assets/icons/plus.svg';
 function NutritionScreen(): JSX.Element {
   const [slickHeight, setSlickHeight] = useState(0);
   const insets = useSafeAreaInsets();
+  // 선택 날짜
   const [nowDate, __] = useState('2023.06.13');
+  // 영양 정보
   const [nutrition, _] = useState({
     currentKcal: 1234,
     totalKcal: 2345,
@@ -48,6 +50,7 @@ function NutritionScreen(): JSX.Element {
       },
     },
   });
+  // 식단 정보
   const [menuList, ___] = useState([
     {
       id: '0',

@@ -20,8 +20,11 @@ function RegisterInfoScreen({
   navigation,
   route,
 }: RegisterInfoScreenProps): JSX.Element {
+  // 유저 정보
   const [userInfo, setUserInfo] = useRecoilState(registerInfoAtom);
+  // 키보드 감지
   const scrollRef = useRef<KeyboardAwareScrollView>(null);
+  // 각 페이지 완료 상태
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
   useEffect(() => {
     setIsReady(prevState => ({

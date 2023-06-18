@@ -10,31 +10,6 @@ import Caption from '../components/text/Caption';
 import HomeScreen from './HomeScreen';
 import designToken from '../assets/design-tokens';
 import NutritionScreen from './NutritionScreen';
-const style = StyleSheet.create({
-  AppBar: {
-    flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.06,
-    // zIndex: 999,
-    backgroundColor: '#fff',
-    elevation: 2,
-  },
-  AppBarItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 9,
-  },
-  AppBarItemTitle: {
-    marginTop: 4,
-    fontSize: 12,
-  },
-});
 
 function BottomBar({state, descriptors, navigation}: any) {
   const insets = useSafeAreaInsets();
@@ -164,5 +139,31 @@ function MainScreen(): JSX.Element {
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  AppBar: {
+    flexDirection: 'row',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.06,
+    // zIndex: 999,
+    backgroundColor: '#fff',
+    elevation: 2,
+  },
+  AppBarItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 9,
+  },
+  AppBarItemTitle: {
+    marginTop: 4,
+    fontSize: 12,
+  },
+});
 
 export default MainScreen;

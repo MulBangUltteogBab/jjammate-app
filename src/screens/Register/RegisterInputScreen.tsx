@@ -8,10 +8,15 @@ import {isReadyAtom, registerInfoAtom} from '../../states/register';
 import {HelperText} from 'react-native-paper';
 import designToken from '../../assets/design-tokens';
 
+// 화면 정보
 export enum InfoType {
+  // 닉네임 입력
   nickName = 'nickName',
+  // 군번 입력
   serialNumber = 'serialNumber',
+  // 비번 입력
   password = 'password',
+  // 비번 확인
   passwordConfirm = 'passwordConfirm',
 }
 

@@ -5,9 +5,13 @@ import designToken from '../../assets/design-tokens';
 import {NutrientType} from '../../@types/nutrition';
 
 type NutrientRatioProps = {
+  // 탄수화물 정보
   carbohydrate: NutrientType;
+  // 단백질 정보
   protein: NutrientType;
+  // 지방 정보
   fat: NutrientType;
+  // 아래 태그들 세로배치
   column?: boolean;
 };
 const NutrientRatio = ({

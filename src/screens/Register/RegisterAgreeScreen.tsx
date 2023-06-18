@@ -10,6 +10,7 @@ import {useRecoilState, useSetRecoilState} from 'recoil';
 import {isReadyAtom, registerAgreeAtom} from '../../states/register';
 
 type RegisterAgreeScreenProps = {
+  //현재 페이지 번호
   index: number;
   route: any;
   navigation: any;
@@ -20,7 +21,9 @@ function RegisterAgreeScreen({
   route,
   navigation,
 }: RegisterAgreeScreenProps): JSX.Element {
+  // 동의 여부
   const [registerAgree, setRegisterAgree] = useRecoilState(registerAgreeAtom);
+  // 각 페이지 상태
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
 
   useEffect(() => {
@@ -29,10 +32,6 @@ function RegisterAgreeScreen({
       [index]: registerAgree.age && registerAgree.privacy && registerAgree.term,
     }));
   }, [index, registerAgree, setIsReady]);
-
-  // useEffect(() => {
-  //   update();
-  // }, [update]);
 
   return (
     <View style={{height: '100%'}}>

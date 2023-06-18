@@ -46,14 +46,18 @@ const Slider = ({values, onChange, width}: any) => {
 };
 
 function PxListScreen({visible, back}: PxListScreenProps): JSX.Element {
+  // px 상품 리스트
   const [pxItems, setPxItems] = useState<PxItemType[]>([]);
+  // 정렬 기준
   const [filter, setFilter] = useState('추천순');
   const [filterVisible, setFilterVisible] = useState(false);
+  // 자세히 필터 슬라이드 값
   const [filterDetail, setFilterDetail] = useState({
     carbohydrate: [0, 500],
     protein: [0, 500],
     fat: [0, 500],
   });
+  // 화면 너비 90프로 값
   const width = Dimensions.get('window').width * 0.9;
   const insets = useSafeAreaInsets();
   useEffect(() => {

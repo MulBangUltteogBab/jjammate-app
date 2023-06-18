@@ -16,8 +16,11 @@ import RegisterCompleteScreen from './RegisterCompleteScreen';
 const Stack = createStackNavigator();
 
 function RegisterScreen({navigation}: any): JSX.Element {
+  // 페이지 인덱스
   const [index, setIndex] = useState(0);
+  // 각 페이지 완료 정보
   const isReady = useRecoilValue(isReadyAtom);
+  // 각 페이지 정보
   const [route, _] = useState([
     {target: 'RegisterAgreeScreen', buttonContent: '동의하고 가입하기'},
     {target: 'RegisterInfoScreen', buttonContent: '다음'},
