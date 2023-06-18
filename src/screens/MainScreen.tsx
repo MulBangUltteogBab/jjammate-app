@@ -9,6 +9,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Caption from '../components/text/Caption';
 import HomeScreen from './HomeScreen';
 import designToken from '../assets/design-tokens';
+import NutritionScreen from './NutritionScreen';
 const style = StyleSheet.create({
   AppBar: {
     flexDirection: 'row',
@@ -114,7 +115,11 @@ function BottomBar({state, descriptors, navigation}: any) {
             <Caption
               style={[
                 style.AppBarItemTitle,
-                {color: isFocused ? '#1CB9D9' : '#CCCCCC'},
+                {
+                  color: isFocused
+                    ? designToken.color.Green
+                    : designToken.color.Grary.Gray400,
+                },
               ]}>
               {label}
             </Caption>
@@ -142,7 +147,7 @@ function MainScreen(): JSX.Element {
         />
         <Tab.Screen
           name="Nutrition"
-          component={HomeScreen}
+          component={NutritionScreen}
           options={{title: '영양'}}
         />
         <Tab.Screen

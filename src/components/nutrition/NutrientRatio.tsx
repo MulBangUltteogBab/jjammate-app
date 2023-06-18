@@ -1,18 +1,21 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Caption} from 'react-native-paper';
-import designToken from '../assets/design-tokens';
+import designToken from '../../assets/design-tokens';
+import {NutrientType} from '../../@types/nutrition';
 
-type Nutrient = {
-  value: number;
-  percent: number;
-};
 type NutrientRatioProps = {
-  carbohydrate: Nutrient;
-  protein: Nutrient;
-  fat: Nutrient;
+  carbohydrate: NutrientType;
+  protein: NutrientType;
+  fat: NutrientType;
+  column?: boolean;
 };
-const NutrientRatio = ({carbohydrate, protein, fat}: NutrientRatioProps) => {
+const NutrientRatio = ({
+  carbohydrate,
+  protein,
+  fat,
+  column = false,
+}: NutrientRatioProps) => {
   return (
     <View>
       <View style={style.container}>
@@ -41,41 +44,35 @@ const NutrientRatio = ({carbohydrate, protein, fat}: NutrientRatioProps) => {
           <Caption style={style.stickPercent}>{fat.percent}%</Caption>
         </View>
       </View>
-      <View style={style.infoArea}>
-        <View style={style.boxWrap}>
-          <View
-            style={[
-              style.box,
-              {
-                backgroundColor: designToken.color.Green,
-              },
-            ]}
-          />
-          <Caption style={style.gray700}>탄수화물</Caption>
+      <View style={column ? style.infoAreaColumn : style.infoArea}>
+        <View
+          style={[style.boxWrap, column && {justifyContent: 'space-between'}]}>
+          <View style={[style.boxWrap, column && {gap: 12}]}>
+            <View
+              style={[style.box, {backgroundColor: designToken.color.Green}]}
+            />
+            <Caption style={style.gray700}>탄수화물</Caption>
+          </View>
           <Caption style={style.gray700}>{carbohydrate.value}g</Caption>
         </View>
-        <View style={style.boxWrap}>
-          <View
-            style={[
-              style.box,
-              {
-                backgroundColor: designToken.color.Blue,
-              },
-            ]}
-          />
-          <Caption style={style.gray700}>단백질</Caption>
+        <View
+          style={[style.boxWrap, column && {justifyContent: 'space-between'}]}>
+          <View style={[style.boxWrap, column && {gap: 12}]}>
+            <View
+              style={[style.box, {backgroundColor: designToken.color.Blue}]}
+            />
+            <Caption style={style.gray700}>단백질</Caption>
+          </View>
           <Caption style={style.gray700}>{protein.value}g</Caption>
         </View>
-        <View style={style.boxWrap}>
-          <View
-            style={[
-              style.box,
-              {
-                backgroundColor: designToken.color.Pink,
-              },
-            ]}
-          />
-          <Caption style={style.gray700}>지방</Caption>
+        <View
+          style={[style.boxWrap, column && {justifyContent: 'space-between'}]}>
+          <View style={[style.boxWrap, column && {gap: 12}]}>
+            <View
+              style={[style.box, {backgroundColor: designToken.color.Pink}]}
+            />
+            <Caption style={style.gray700}>지방</Caption>
+          </View>
           <Caption style={style.gray700}>{fat.value}g</Caption>
         </View>
       </View>
@@ -111,11 +108,21 @@ const style = StyleSheet.create({
     width: 10,
     borderRadius: 2,
   },
-  boxWrap: {flexDirection: 'row', alignItems: 'center', gap: 4},
+  boxWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
   infoArea: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 30,
+    // marginBottom: 30,
   },
-  container: {flexDirection: 'row', marginBottom: 20},
+  infoAreaColumn: {
+    gap: 8,
+  },
+  container: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
 });
