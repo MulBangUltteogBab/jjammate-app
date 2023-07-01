@@ -105,6 +105,7 @@ function NutritionScreen(): JSX.Element {
         }}>
         <CardView style={[style.menuCard, {minHeight: slickHeight}]}>
           <View
+            key={menu.id}
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',

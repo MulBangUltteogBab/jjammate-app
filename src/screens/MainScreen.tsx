@@ -10,6 +10,7 @@ import Caption from '../components/text/Caption';
 import HomeScreen from './HomeScreen';
 import designToken from '../assets/design-tokens';
 import NutritionScreen from './NutritionScreen';
+import ExerciseScreen from './Exercise/ExerciseScreen';
 
 function BottomBar({state, descriptors, navigation}: any) {
   const insets = useSafeAreaInsets();
@@ -127,7 +128,7 @@ function MainScreen(): JSX.Element {
         />
         <Tab.Screen
           name="Exercise"
-          component={HomeScreen}
+          component={ExerciseScreen}
           options={{title: '운동'}}
         />
         <Tab.Screen

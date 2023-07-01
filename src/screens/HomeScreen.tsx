@@ -27,7 +27,7 @@ function HomeScreen(): JSX.Element {
         }}>
         <Wrap style={{alignItems: 'flex-end', paddingVertical: 19}}>
           <TouchableOpacity>
-            <BellIcon />
+            <BellIcon fill={'white'} />
           </TouchableOpacity>
         </Wrap>
         <Wrap style={{paddingBottom: 31, flexDirection: 'row'}}>
