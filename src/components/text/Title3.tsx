@@ -14,6 +14,7 @@ const defaultStyle = StyleSheet.create({
     letterSpacing: 1,
     fontFamily: 'SUIT-Bold',
     fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

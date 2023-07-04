@@ -44,7 +44,7 @@ const PxItem = ({data}: PxItemProps) => {
           </TouchableOpacity>
           <Image
             source={require('../../assets/images/test-item.png')}
-            style={[{width: '100%', height: 350}]}
+            style={[{width: '100%', height: 300}]}
           />
           <Wrap>
             <Title3
@@ -72,7 +72,7 @@ const PxItem = ({data}: PxItemProps) => {
               bottom: insets.bottom,
               width: '100%',
             }}>
-            <Wrap>
+            <Wrap style={{marginBottom: 10}}>
               <CustomButton
                 title={'추가하기'}
                 activate={true}
@@ -89,7 +89,7 @@ const PxItem = ({data}: PxItemProps) => {
         onPress={() => {
           setIsDetail(true);
         }}>
-        <View>
+        <View style={{gap: 8}}>
           <Image
             source={require('../../assets/images/test-item.png')}
             style={[style.image, {width: width, height: width}]}

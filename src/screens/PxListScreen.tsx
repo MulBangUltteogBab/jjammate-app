@@ -70,14 +70,17 @@ function PxListScreen({visible, back}: PxListScreenProps): JSX.Element {
         carbohydrate: {
           value: 1234,
           percent: 55,
+          total: 1234,
         },
         protein: {
           value: 1234,
           percent: 30,
+          total: 1234,
         },
         fat: {
           value: 1234,
           percent: 15,
+          total: 1234,
         },
       },
       {
@@ -88,14 +91,17 @@ function PxListScreen({visible, back}: PxListScreenProps): JSX.Element {
         carbohydrate: {
           value: 1234,
           percent: 55,
+          total: 1234,
         },
         protein: {
           value: 1234,
           percent: 30,
+          total: 1234,
         },
         fat: {
           value: 1234,
           percent: 15,
+          total: 1234,
         },
       },
       {
@@ -106,14 +112,17 @@ function PxListScreen({visible, back}: PxListScreenProps): JSX.Element {
         carbohydrate: {
           value: 1234,
           percent: 55,
+          total: 1234,
         },
         protein: {
           value: 1234,
           percent: 30,
+          total: 1234,
         },
         fat: {
           value: 1234,
           percent: 15,
+          total: 1234,
         },
       },
     ]);

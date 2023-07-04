@@ -229,7 +229,8 @@ function NutritionScreen(): JSX.Element {
       </View>
       <ScrollView
         style={{flex: 1, backgroundColor: designToken.color.Grary.Gray100}}>
-        <View style={{gap: 30, paddingTop: 20, paddingBottom: insets.bottom}}>
+        <View
+          style={{gap: 30, paddingTop: 20, paddingBottom: insets.bottom + 20}}>
           <Wrap>
             <View style={style.row}>
               <Headline2 style={Colors.Gray700}>{nowDate}</Headline2>
