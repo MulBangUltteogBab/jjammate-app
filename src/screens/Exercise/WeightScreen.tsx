@@ -20,6 +20,7 @@ import Title3 from '../../components/text/Title3';
 import CheckIcon from '../../assets/icons/check-on.svg';
 import {ProgressCircle} from 'react-native-svg-charts';
 import CompleteIcon from '../../assets/icons/fi-sr-comment-check.svg';
+import CompleteModal from '../../components/common/CompleteModal';
 
 function WeightScreen({navigation}: any): JSX.Element {
   const insets = useSafeAreaInsets();
@@ -83,56 +84,19 @@ function WeightScreen({navigation}: any): JSX.Element {
         setVisible={setExplain}
       />
       <Modal visible={during}>
-        {(restModal || visibleComplete) && (
-          <View style={style.overlayBackground} />
-        )}
-        <Modal
+        <CompleteModal
+          onPress={() => {
+            // 운동 완료
+            setNowSet(0);
+            setNowExcersie(0);
+            setVisibleComplete(false);
+            setOnRest(false);
+            setRestModal(false);
+            setDuring(false);
+          }}
           visible={visibleComplete}
-          transparent={true}
-          animationType="fade">
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Wrap>
-              <View
-                style={{
-                  backgroundColor: designToken.color.Grary.White,
-                  borderRadius: 24,
-                  width: '100%',
-                  paddingVertical: 19,
-                  paddingHorizontal: 27,
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}>
-                <View style={{marginTop: 33}}>
-                  <CompleteIcon />
-                </View>
-                <View style={{marginTop: 25, marginBottom: 47}}>
-                  <Title3 style={{color: designToken.color.Grary.Gray800}}>
-                    오늘의 운동을 완료했어요!
-                  </Title3>
-                </View>
-                <CustomButton
-                  title="운동으로 가기"
-                  activate={true}
-                  onPress={() => {
-                    // 운동 완료
-                    setNowSet(0);
-                    setNowExcersie(0);
-                    setVisibleComplete(false);
-                    setOnRest(false);
-                    setRestModal(false);
-                    setDuring(false);
-                  }}
-                />
-              </View>
-            </Wrap>
-          </View>
-        </Modal>
+        />
+        {restModal && <View style={style.overlayBackground} />}
         <Modal visible={restModal} transparent={true} animationType="slide">
           <View style={{flex: 1}} />
           <View
