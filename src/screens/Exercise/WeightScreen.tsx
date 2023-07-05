@@ -2,7 +2,7 @@ import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Title1 from '../../components/text/Title1';
 import Wrap from '../../components/common/Wrap';
 import Body2 from '../../components/text/Body2';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import designToken from '../../assets/design-tokens';
 import WeightCard from '../../components/Exercise/WeightCard';
 import CustomButton from '../../components/common/CustomButton';
@@ -19,10 +19,9 @@ import ExplainModal from '../../components/Exercise/ExplainModal';
 import Title3 from '../../components/text/Title3';
 import CheckIcon from '../../assets/icons/check-on.svg';
 import {ProgressCircle} from 'react-native-svg-charts';
-import CompleteIcon from '../../assets/icons/fi-sr-comment-check.svg';
 import CompleteModal from '../../components/common/CompleteModal';
 
-function WeightScreen({navigation}: any): JSX.Element {
+function WeightScreen(): JSX.Element {
   const insets = useSafeAreaInsets();
   const [day, setDay] = useState(1);
   const [exercises, setExercise] = useState<ExerciseType[]>([
@@ -72,7 +71,9 @@ function WeightScreen({navigation}: any): JSX.Element {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (onRest && time > 0) setTime(prev => prev - 1);
+      if (onRest && time > 0) {
+        setTime(prev => prev - 1);
+      }
     }, 1000);
     return () => clearInterval(timer);
   }, [onRest, time]);

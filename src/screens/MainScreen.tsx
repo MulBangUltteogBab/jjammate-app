@@ -11,6 +11,7 @@ import HomeScreen from './HomeScreen';
 import designToken from '../assets/design-tokens';
 import NutritionScreen from './NutritionScreen';
 import ExerciseScreen from './Exercise/ExerciseScreen';
+import MyPageScreen from './MyPageScreen';
 
 function BottomBar({state, descriptors, navigation}: any) {
   const insets = useSafeAreaInsets();
@@ -133,7 +134,7 @@ function MainScreen(): JSX.Element {
         />
         <Tab.Screen
           name="MyPage"
-          component={HomeScreen}
+          component={MyPageScreen}
           options={{title: '마이페이지'}}
         />
       </Tab.Navigator>
