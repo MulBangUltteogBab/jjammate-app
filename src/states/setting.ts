@@ -16,6 +16,7 @@ const autoLoginAtom = atom({
 export const autoLoginState = selector({
   key: 'autoLoginSelector',
   get: ({get}) => {
+    console.log(get(autoLoginAtom));
     return get(autoLoginAtom);
   },
   set: ({set}, login) => {
@@ -54,6 +55,7 @@ export const userCodeSelector = selector({
     return get(userCodeAtom);
   },
   set: ({set}, code) => {
+    // console.log(code);
     set(userCodeAtom, code);
     const userCode = code as UserCode;
     try {

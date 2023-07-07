@@ -9,6 +9,7 @@ import {HelperText} from 'react-native-paper';
 import designToken from '../../assets/design-tokens';
 import SearchIcon from '../../assets/icons/search.svg';
 import Body2 from '../../components/text/Body2';
+import http from '../../utils/http';
 
 type RegisterDepartmentScreenProps = {
   index: number;
@@ -25,12 +26,7 @@ function RegisterDepartmentScreen({
   // 각 페이지 완료 상태
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
   // 부대 리스트
-  const [dataList, setDataList] = useState<string[]>([
-    'test1',
-    'test2',
-    'test3',
-    'test4',
-  ]);
+  const [dataList, setDataList] = useState<string[]>([]);
   return (
     <View style={{height: '100%'}}>
       <Title1>소속부대가 어디인가요?</Title1>
@@ -43,7 +39,7 @@ function RegisterDepartmentScreen({
             <SearchIcon />
           </TouchableOpacity>
         }
-        onChangeText={text => {
+        onChangeText={async text => {
           setUserInfo({
             ...userInfo,
             department: text,
@@ -53,15 +49,14 @@ function RegisterDepartmentScreen({
             [index]: false,
           });
           if (text.length > 2) {
-            //api 호출
-            /*
-            try{
-                const {data} = axios.get(`endpoint/${text}`)
-                setDataList(data);
-            }catch(err){
-                console.log(err)
+            try {
+              const {data} = await http.post('/common/api/getunitlist/', {
+                unique: text,
+              });
+              setDataList(data.unit);
+            } catch (err) {
+              console.log(err);
             }
-            */
           }
         }}
         wrapStyle={

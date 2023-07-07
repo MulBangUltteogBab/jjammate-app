@@ -2,24 +2,14 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Caption} from 'react-native-paper';
 import designToken from '../../assets/design-tokens';
-import {NutrientType} from '../../@types/nutrition';
+import {Nutrition} from '../../@types/nutrition';
 
 type NutrientRatioProps = {
-  // 탄수화물 정보
-  carbohydrate: NutrientType;
-  // 단백질 정보
-  protein: NutrientType;
-  // 지방 정보
-  fat: NutrientType;
+  nutrition: Nutrition;
   // 아래 태그들 세로배치
   column?: boolean;
 };
-const NutrientRatio = ({
-  carbohydrate,
-  protein,
-  fat,
-  column = false,
-}: NutrientRatioProps) => {
+const NutrientRatio = ({nutrition, column = false}: NutrientRatioProps) => {
   return (
     <View>
       <View style={style.container}>
@@ -28,24 +18,34 @@ const NutrientRatio = ({
             style.stick,
             {
               backgroundColor: designToken.color.Green,
-              flex: carbohydrate.percent,
+              flex: Math.max(nutrition.percent.carbohydrate, 1),
             },
           ]}>
-          <Caption style={style.stickPercent}>{carbohydrate.percent}%</Caption>
+          <Caption style={style.stickPercent}>
+            {nutrition.percent.carbohydrate}%
+          </Caption>
         </View>
         <View
           style={[
             style.stick,
-            {backgroundColor: designToken.color.Blue, flex: protein.percent},
+            {
+              backgroundColor: designToken.color.Blue,
+              flex: Math.max(nutrition.percent.protein, 1),
+            },
           ]}>
-          <Caption style={style.stickPercent}>{protein.percent}%</Caption>
+          <Caption style={style.stickPercent}>
+            {nutrition.percent.protein}%
+          </Caption>
         </View>
         <View
           style={[
             style.stick,
-            {backgroundColor: designToken.color.Pink, flex: fat.percent},
+            {
+              backgroundColor: designToken.color.Pink,
+              flex: Math.max(nutrition.percent.fat, 1),
+            },
           ]}>
-          <Caption style={style.stickPercent}>{fat.percent}%</Caption>
+          <Caption style={style.stickPercent}>{nutrition.percent.fat}%</Caption>
         </View>
       </View>
       <View style={column ? style.infoAreaColumn : style.infoArea}>
@@ -57,7 +57,9 @@ const NutrientRatio = ({
             />
             <Caption style={style.gray700}>탄수화물</Caption>
           </View>
-          <Caption style={style.gray700}>{carbohydrate.value}g</Caption>
+          <Caption style={style.gray700}>
+            {nutrition.taken.carbohydrate}g
+          </Caption>
         </View>
         <View
           style={[style.boxWrap, column && {justifyContent: 'space-between'}]}>
@@ -67,7 +69,7 @@ const NutrientRatio = ({
             />
             <Caption style={style.gray700}>단백질</Caption>
           </View>
-          <Caption style={style.gray700}>{protein.value}g</Caption>
+          <Caption style={style.gray700}>{nutrition.taken.protein}g</Caption>
         </View>
         <View
           style={[style.boxWrap, column && {justifyContent: 'space-between'}]}>
@@ -77,7 +79,7 @@ const NutrientRatio = ({
             />
             <Caption style={style.gray700}>지방</Caption>
           </View>
-          <Caption style={style.gray700}>{fat.value}g</Caption>
+          <Caption style={style.gray700}>{nutrition.taken.fat}g</Caption>
         </View>
       </View>
     </View>

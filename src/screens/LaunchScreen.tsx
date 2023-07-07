@@ -1,9 +1,20 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import designToken from '../assets/design-tokens';
 import CustomButton from '../components/common/CustomButton';
+import {useRecoilValue} from 'recoil';
+import {autoLoginState, userCodeSelector} from '../states/setting';
 
 function LaunchScreen({navigation}: any): JSX.Element {
+  const autoLogin = useRecoilValue(autoLoginState);
+  const userCode = useRecoilValue(userCodeSelector);
+
+  useEffect(() => {
+    if (autoLogin && userCode.military_serial_number !== '') {
+      navigation.navigate('MainScreen');
+    }
+  }, [autoLogin, navigation, userCode]);
+
   return (
     <SafeAreaView style={style.wrap}>
       <View style={style.logoWrap}>

@@ -13,3 +13,10 @@ export const registerPost = async (json: any) => {
     return false;
   }
 };
+
+// export const getDepartmentList = async () => {
+//   try{
+//     const res = await http.get('/common/api/getdepartmentlist/');
+//     return res.data;
+//   }
+// }

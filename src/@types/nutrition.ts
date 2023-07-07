@@ -22,3 +22,21 @@ export type PxItemType = {
   protein: NutrientType;
   fat: NutrientType;
 };
+
+export type Nutrition = {
+  taken: {
+    carbohydrate: number;
+    protein: number;
+    fat: number;
+  };
+  percent: {
+    carbohydrate: number;
+    protein: number;
+    fat: number;
+  };
+  total: {
+    carbohydrate: number;
+    protein: number;
+    fat: number;
+  };
+};

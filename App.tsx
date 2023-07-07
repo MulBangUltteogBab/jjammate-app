@@ -14,7 +14,7 @@ import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import LaunchScreen from './src/screens/LaunchScreen';
 import {setCustomText} from 'react-native-global-props';
-import {RecoilRoot} from 'recoil';
+import {RecoilRoot, useRecoilValue} from 'recoil';
 import LoginScreen from './src/screens/LoginScreen';
 import designToken from './src/assets/design-tokens';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
@@ -23,6 +23,7 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import MainScreen from './src/screens/MainScreen';
+import {autoLoginState} from './src/states/setting';
 const Stack = createNativeStackNavigator();
 
 const Theme = {
@@ -44,23 +45,19 @@ const ThemePaper = {
 };
 
 function App(): JSX.Element {
-  useEffect(() => {
-    const init = async () => {
-      // …do multiple sync or async tasks
-    };
-
-    init().finally(async () => {
-      await RNBootSplash.hide({fade: true, duration: 500});
-      console.log('BootSplash has been hidden successfully');
-    });
-  }, []);
-
   const customTextProps = {
     style: {
       fontFamily: 'SUIT-Regular',
     },
   };
   setCustomText(customTextProps);
+  useEffect(() => {
+    const init = async () => {};
+    init().finally(async () => {
+      await RNBootSplash.hide({fade: true, duration: 500});
+      console.log('BootSplash has been hidden successfully');
+    });
+  }, []);
 
   return (
     <PaperProvider theme={ThemePaper}>

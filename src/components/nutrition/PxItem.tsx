@@ -59,12 +59,12 @@ const PxItem = ({data}: PxItemProps) => {
               <Headline1 style={style.gray900}>🔥 총 열량</Headline1>
               <Headline1 style={style.gray900}>{data.kcal} kcal</Headline1>
             </View>
-            <NutrientRatio
+            {/* <NutrientRatio
               carbohydrate={data.carbohydrate}
               protein={data.protein}
               fat={data.fat}
               column={true}
-            />
+            /> */}
           </Wrap>
           <View
             style={{

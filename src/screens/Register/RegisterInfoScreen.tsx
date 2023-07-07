@@ -37,7 +37,9 @@ function RegisterInfoScreen({
     }));
   }, [userInfo, setIsReady, index]);
   return (
-    <KeyboardAwareScrollView ref={scrollRef}>
+    <KeyboardAwareScrollView
+      ref={scrollRef}
+      showsVerticalScrollIndicator={false}>
       <View style={style.container}>
         <Title1>사용자님의 신체정보가 필요해요!</Title1>
         <View>
@@ -106,7 +108,7 @@ function RegisterInfoScreen({
                     });
                   }
                 }}
-                value={String(userInfo.age)}
+                value={userInfo.age !== 0 ? String(userInfo.age) : ''}
               />
             </View>
             <View style={style.inputWrap}>
@@ -132,7 +134,7 @@ function RegisterInfoScreen({
                     });
                   }
                 }}
-                value={String(userInfo.height)}
+                value={userInfo.height !== 0 ? String(userInfo.height) : ''}
               />
             </View>
           </View>
@@ -160,7 +162,7 @@ function RegisterInfoScreen({
                     });
                   }
                 }}
-                value={String(userInfo.weight)}
+                value={userInfo.weight !== 0 ? String(userInfo.weight) : ''}
               />
             </View>
             <View style={style.inputWrap} />

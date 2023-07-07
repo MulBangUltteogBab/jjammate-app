@@ -1,7 +1,8 @@
-import {atom} from 'recoil';
+import {atom, selector} from 'recoil';
+import {basePost} from './utils';
 
 export const registerInfoAtom = atom({
-  key: 'userInfo',
+  key: 'registerInfo',
   default: {
     username: '',
     military_serial_number: '',

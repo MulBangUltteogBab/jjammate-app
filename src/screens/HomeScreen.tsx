@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import designToken from '../assets/design-tokens';
 import BellIcon from '../assets/icons/bell.svg';
@@ -13,26 +13,20 @@ import Headline2 from '../components/text/Headline2';
 import Body2 from '../components/text/Body2';
 import NutrientRatio from '../components/nutrition/NutrientRatio';
 import PxRecommend from '../components/nutrition/PxRecommend';
-import http from '../utils/http';
 import {useRecoilValue} from 'recoil';
-import {userCodeSelector} from '../states/setting';
+import {getDietSelector, kcalSelector, nutritionSelector} from '../states/home';
+import {userInfoSelector} from '../states/user';
+import CardView from '../components/common/CardView';
+import Headline1 from '../components/text/Headline1';
 
 function HomeScreen(): JSX.Element {
   // 노치 같은 영역 너비, 높이 받기
   const insets = useSafeAreaInsets();
-  const [kcal, setKcal] = React.useState({});
-  const userCode = useRecoilValue(userCodeSelector);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const {data} = await http.post('/common/api/getkcalstatus/');
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
-
+  const kcalStatus = useRecoilValue(kcalSelector);
+  const nutritionStatus = useRecoilValue(nutritionSelector);
+  const userInfo = useRecoilValue(userInfoSelector);
+  const diet = useRecoilValue(getDietSelector);
+  console.log(diet);
   return (
     <View>
       <ScrollView
@@ -48,7 +42,7 @@ function HomeScreen(): JSX.Element {
         <Wrap style={{paddingBottom: 31, flexDirection: 'row'}}>
           <View style={{flex: 1}}>
             <LargeTitle style={{color: designToken.color.Grary.White}}>
-              {'뭐시기님!\n'}어서오세요.
+              {userInfo.username + '님!\n어서오세요.'}
             </LargeTitle>
           </View>
           <View style={{flex: 1, alignItems: 'flex-end'}}>
@@ -60,7 +54,7 @@ function HomeScreen(): JSX.Element {
             <Wrap>
               <View style={{flexDirection: 'row'}}>
                 <View style={style.kcalWrap}>
-                  <Title3>1256</Title3>
+                  <Title3>{kcalStatus.taken}</Title3>
                   <Caption>섭취 칼로리</Caption>
                 </View>
                 <View style={style.kcalWrap}>
@@ -79,12 +73,14 @@ function HomeScreen(): JSX.Element {
                         strokeWidth={8}
                       />
                     </View>
-                    <Title3 style={{textAlign: 'center'}}>{1235}</Title3>
+                    <Title3 style={{textAlign: 'center'}}>
+                      {kcalStatus.remain}
+                    </Title3>
                   </View>
                   <Caption>잔여 칼로리</Caption>
                 </View>
                 <View style={style.kcalWrap}>
-                  <Title3>1256</Title3>
+                  <Title3>{kcalStatus.burned}</Title3>
                   <Caption>소비 칼로리</Caption>
                 </View>
               </View>
@@ -103,11 +99,7 @@ function HomeScreen(): JSX.Element {
                   }}>
                   오늘 먹은 탄단지
                 </Headline2>
-                <NutrientRatio
-                  carbohydrate={{value: 1234, total: 2000, percent: 55}}
-                  protein={{value: 1234, total: 2000, percent: 30}}
-                  fat={{value: 1234, total: 2000, percent: 15}}
-                />
+                <NutrientRatio nutrition={nutritionStatus} />
               </View>
             </Wrap>
           </View>
@@ -121,46 +113,66 @@ function HomeScreen(): JSX.Element {
                 오늘의 부대 식단
               </Title3>
             </Wrap>
-            <ScrollView
-              horizontal
-              style={{paddingLeft: '5%'}}
-              showsHorizontalScrollIndicator={false}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: 8,
-                  paddingBottom: 34,
-                  paddingTop: 20,
-                }}>
-                <View style={style.menuCard}>
-                  <View style={style.timeCard}>
-                    <Headline2 style={{color: designToken.color.Grary.Gray700}}>
-                      🌥️ 조식
-                    </Headline2>
+            {diet ? (
+              <ScrollView
+                horizontal
+                style={{paddingLeft: '5%'}}
+                showsHorizontalScrollIndicator={false}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 8,
+                    paddingBottom: 34,
+                    paddingTop: 20,
+                  }}>
+                  <View style={style.menuCard}>
+                    <View style={style.timeCard}>
+                      <Headline2
+                        style={{color: designToken.color.Grary.Gray700}}>
+                        🌥️ 조식
+                      </Headline2>
+                    </View>
+                    <View style={{gap: 4}}>
+                      <Body2>test</Body2>
+                    </View>
                   </View>
-                  <View style={{gap: 4}}>
-                    <Body2>test</Body2>
-                    <Body2>test</Body2>
-                    <Body2>test</Body2>
-                    <Body2>test</Body2>
+                  <View style={style.menuCard}>
+                    <View style={style.timeCard}>
+                      <Headline2
+                        style={{color: designToken.color.Grary.Gray700}}>
+                        ☀ 중식
+                      </Headline2>
+                    </View>
+                    <View style={{gap: 4}}>
+                      <Body2>test</Body2>
+                    </View>
+                  </View>
+                  <View style={style.menuCard}>
+                    <View style={style.timeCard}>
+                      <Headline2
+                        style={{color: designToken.color.Grary.Gray700}}>
+                        🌙 석식
+                      </Headline2>
+                    </View>
+                    <View style={{gap: 4}}>
+                      <Body2>test</Body2>
+                    </View>
                   </View>
                 </View>
-                <View style={style.menuCard}>
-                  <View style={style.timeCard}>
-                    <Headline2 style={{color: designToken.color.Grary.Gray700}}>
-                      ☀ 중식
-                    </Headline2>
-                  </View>
-                </View>
-                <View style={style.menuCard}>
-                  <View style={style.timeCard}>
-                    <Headline2 style={{color: designToken.color.Grary.Gray700}}>
-                      🌙 석식
-                    </Headline2>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
+              </ScrollView>
+            ) : (
+              <Wrap style={{marginVertical: 20}}>
+                <CardView style={{height: 100, justifyContent: 'center'}}>
+                  <Headline1
+                    style={{
+                      color: designToken.color.Grary.Gray900,
+                      textAlign: 'center',
+                    }}>
+                    식단정보가 없습니다.
+                  </Headline1>
+                </CardView>
+              </Wrap>
+            )}
             <PxRecommend />
           </View>
         </View>
