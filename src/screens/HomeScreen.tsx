@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import designToken from '../assets/design-tokens';
 import BellIcon from '../assets/icons/bell.svg';
@@ -13,10 +13,25 @@ import Headline2 from '../components/text/Headline2';
 import Body2 from '../components/text/Body2';
 import NutrientRatio from '../components/nutrition/NutrientRatio';
 import PxRecommend from '../components/nutrition/PxRecommend';
+import http from '../utils/http';
+import {useRecoilValue} from 'recoil';
+import {userCodeSelector} from '../states/setting';
 
 function HomeScreen(): JSX.Element {
   // 노치 같은 영역 너비, 높이 받기
   const insets = useSafeAreaInsets();
+  const [kcal, setKcal] = React.useState({});
+  const userCode = useRecoilValue(userCodeSelector);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {data} = await http.post('/common/api/getkcalstatus/');
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
   return (
     <View>

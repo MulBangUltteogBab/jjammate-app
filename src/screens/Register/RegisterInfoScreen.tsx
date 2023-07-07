@@ -30,7 +30,7 @@ function RegisterInfoScreen({
     setIsReady(prevState => ({
       ...prevState,
       [index]:
-        userInfo.gender !== '' &&
+        userInfo.sex !== '' &&
         userInfo.age !== 0 &&
         userInfo.height !== 0 &&
         userInfo.weight !== 0,
@@ -52,12 +52,10 @@ function RegisterInfoScreen({
             <View style={style.flex}>
               <TouchableOpacity
                 style={
-                  userInfo.gender === 'female'
-                    ? style.iconWrapSeleted
-                    : style.iconWrap
+                  userInfo.sex === 'f' ? style.iconWrapSeleted : style.iconWrap
                 }
                 onPress={() => {
-                  setUserInfo({...userInfo, gender: 'female'});
+                  setUserInfo({...userInfo, sex: 'f'});
                 }}>
                 <Text style={style.icon}>🙆🏻‍♀️</Text>
               </TouchableOpacity>
@@ -69,12 +67,10 @@ function RegisterInfoScreen({
             <View style={style.flex}>
               <TouchableOpacity
                 style={
-                  userInfo.gender === 'male'
-                    ? style.iconWrapSeleted
-                    : style.iconWrap
+                  userInfo.sex === 'm' ? style.iconWrapSeleted : style.iconWrap
                 }
                 onPress={() => {
-                  setUserInfo({...userInfo, gender: 'male'});
+                  setUserInfo({...userInfo, sex: 'm'});
                 }}>
                 <Text style={style.icon}>🙆🏻‍♂️</Text>
               </TouchableOpacity>

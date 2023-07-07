@@ -4,14 +4,14 @@
  *
  * @format
  */
-
+import Toast from 'react-native-toast-message';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import RNBootSplash from 'react-native-bootsplash';
 import 'react-native-gesture-handler';
 
 import React, {useEffect} from 'react';
-import {SafeAreaView, View} from 'react-native';
+import {View} from 'react-native';
 import LaunchScreen from './src/screens/LaunchScreen';
 import {setCustomText} from 'react-native-global-props';
 import {RecoilRoot} from 'recoil';
@@ -69,7 +69,7 @@ function App(): JSX.Element {
           <NavigationContainer theme={Theme}>
             <Stack.Navigator
               // initialRouteName="LaunchScreen"
-              initialRouteName="MainScreen"
+              initialRouteName="LaunchScreen"
               screenOptions={{
                 headerShown: false,
                 animation: 'fade',
@@ -81,6 +81,7 @@ function App(): JSX.Element {
               <Stack.Screen name="MainScreen" component={MainScreen} />
             </Stack.Navigator>
           </NavigationContainer>
+          <Toast />
         </View>
       </RecoilRoot>
     </PaperProvider>

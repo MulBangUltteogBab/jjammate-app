@@ -137,8 +137,12 @@ function NutritionScreen(): JSX.Element {
               justifyContent: 'space-between',
             }}>
             <View style={{gap: 4}}>
-              {menu.list.map((data: string) => {
-                return <Body2 style={Colors.Gray700}>{data}</Body2>;
+              {menu.list.map((data: string, index: number) => {
+                return (
+                  <Body2 style={Colors.Gray700} key={index}>
+                    {data}
+                  </Body2>
+                );
               })}
             </View>
             <View style={{justifyContent: 'flex-end', gap: 11}}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, StyleSheet, Text, View} from 'react-native';
+import {Modal, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Header from '../common/Header';
 import {WorriorType} from '../../@types/exercise';
 import RunningIcon from '../../assets/icons/Running.svg';
@@ -18,16 +18,18 @@ type WorriorModalProps = {
 const Timer = ({id = 0, onComplete}: any) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const limit = (id == 0 ? 21 : 2) * 60;
+  const limit = (id === 0 ? 21 : 2) * 60;
   useEffect(() => {
     const timer = setInterval(() => {
-      if (isRunning && time < limit) setTime(prev => prev + 1);
+      if (isRunning && time < limit) {
+        setTime(prev => prev + 1);
+      }
       if (time >= limit) {
         setIsRunning(false);
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [isRunning, time]);
+  }, [isRunning, limit, time]);
 
   return (
     <>
@@ -140,9 +142,10 @@ const WorriorModal = ({worrior, visible, setVisible}: WorriorModalProps) => {
         onPress={() => {
           setComplete(false);
           setVisible(false);
+          setOnInput(false);
         }}
       />
-      <View style={{height: '100%'}}>
+      <SafeAreaView style={{height: '100%'}}>
         <Header
           title={worrior.title}
           onPress={() => {
@@ -158,7 +161,7 @@ const WorriorModal = ({worrior, visible, setVisible}: WorriorModalProps) => {
           />
         )}
         {onInput && <Input onComplete={() => setComplete(true)} />}
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };

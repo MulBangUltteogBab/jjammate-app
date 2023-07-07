@@ -79,12 +79,12 @@ function WeightScreen(): JSX.Element {
   }, [onRest, time]);
   return (
     <>
-      <ExplainModal
-        exercise={exercises[nowExcersie]}
-        visible={explain}
-        setVisible={setExplain}
-      />
       <Modal visible={during}>
+        <ExplainModal
+          exercise={exercises[nowExcersie]}
+          visible={explain}
+          setVisible={setExplain}
+        />
         <CompleteModal
           onPress={() => {
             // 운동 완료
@@ -105,6 +105,7 @@ function WeightScreen(): JSX.Element {
               borderTopLeftRadius: 24,
               borderTopRightRadius: 24,
               backgroundColor: designToken.color.Grary.White,
+              paddingBottom: insets.bottom,
             }}>
             <View style={style.barWrap}>
               <View style={style.grayBar} />
@@ -203,7 +204,11 @@ function WeightScreen(): JSX.Element {
             backgroundColor: designToken.color.Grary.Gray100,
             height: '100%',
           }}>
-          <View style={{backgroundColor: designToken.color.Grary.White}}>
+          <View
+            style={{
+              backgroundColor: designToken.color.Grary.White,
+              paddingTop: insets.top,
+            }}>
             <Header
               onPress={() => {
                 setDuring(false);
@@ -297,7 +302,7 @@ function WeightScreen(): JSX.Element {
               </View>
             </Wrap>
           </ScrollView>
-          <Wrap style={{marginBottom: 10}}>
+          <Wrap style={{marginBottom: insets.bottom + 10}}>
             <CustomButton
               title={String(nowSet + 1) + '세트 완료'}
               activate={true}

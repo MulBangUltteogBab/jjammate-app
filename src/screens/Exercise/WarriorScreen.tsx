@@ -2,8 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import Title1 from '../../components/text/Title1';
 import designToken from '../../assets/design-tokens';
 import Body2 from '../../components/text/Body2';
-import {Key, useEffect, useState} from 'react';
-import WeightCard from '../../components/Exercise/WeightCard';
+import {Key, useState} from 'react';
 import {WorriorType} from '../../@types/exercise';
 import WorriorCard from '../../components/Exercise/WorriorCard';
 import Wrap from '../../components/common/Wrap';
@@ -14,16 +13,42 @@ import Caption2 from '../../components/text/Caption2';
 import {LineChart, XAxis} from 'react-native-svg-charts';
 import CardView from '../../components/common/CardView';
 import {Caption} from 'react-native-paper';
-import {Circle, Svg, Text} from 'react-native-svg';
+import {Circle, Text} from 'react-native-svg';
 import WorriorModal from '../../components/Exercise/WorriorModal';
 
-interface DecoratorProps {
-  x: (arg: number) => number;
-  y: (arg: number) => number;
-  data: number[];
-}
-
-// 60*20+34=1234
+const Dots = ({x, y, data}: any) => {
+  return (
+    <>
+      {data?.map((value: any, index: Key | null | undefined) => (
+        <Circle
+          key={index}
+          cx={x(index)}
+          cy={y(value)}
+          r={4}
+          stroke={designToken.color.Green}
+          fill={designToken.color.Green}
+        />
+      ))}
+    </>
+  );
+};
+const Labels = ({x, y, data}: any) => {
+  return (
+    <>
+      {data?.map((value: any, index: Key | null | undefined) => (
+        <Text
+          key={index}
+          x={x(index) - 5}
+          y={y(value) + 20}
+          fontSize={10}
+          fontFamily="SUIT-Regular"
+          fill={designToken.color.Green}>
+          {value}
+        </Text>
+      ))}
+    </>
+  );
+};
 function WarriorScreen({navigation}: any): JSX.Element {
   const [day, setDay] = useState(1);
   const [now, setNow] = useState(0);
@@ -46,42 +71,7 @@ function WarriorScreen({navigation}: any): JSX.Element {
     [50, 10, 25, 40, 37, 10, 33, 54],
     [50, 30, 60, 30, 27, 70, 53, 54],
   ]);
-  const Dots = ({x, y, data}: any) => {
-    return (
-      <>
-        {data?.map((value: any, index: Key | null | undefined) => (
-          <Circle
-            key={index}
-            cx={x(index)}
-            cy={y(value)}
-            r={4}
-            stroke={designToken.color.Green}
-            fill={designToken.color.Green}
-          />
-        ))}
-      </>
-    );
-  };
-  const Labels = ({x, y, data}: any) => {
-    return (
-      <>
-        {data?.map((value: any, index: Key | null | undefined) => (
-          // <Svg key={index} x={x(index)} y={y(value)}>
-          //   <Caption2>{value}</Caption2>
-          // </Svg>
-          <Text
-            key={index}
-            x={x(index) - 5}
-            y={y(value) + 20}
-            fontSize={10}
-            fontFamily="SUIT-Regular"
-            fill={designToken.color.Green}>
-            {value}
-          </Text>
-        ))}
-      </>
-    );
-  };
+
   return (
     <>
       <WorriorModal
@@ -191,6 +181,7 @@ function WarriorScreen({navigation}: any): JSX.Element {
                   </View>
                 </View>
                 <LineChart
+                  animate={true}
                   style={{height: 200}}
                   data={datas[nowChart]}
                   svg={{stroke: designToken.color.Green, strokeWidth: 2}}

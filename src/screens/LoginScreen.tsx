@@ -7,16 +7,24 @@ import Header from '../components/common/Header';
 import Caption from '../components/text/Caption';
 import designToken from '../assets/design-tokens';
 import CheckBox from '../components/common/CheckBox';
-import {autoLoginState} from '../states/setting';
-import {useRecoilState} from 'recoil';
+import {autoLoginState, userCodeSelector} from '../states/setting';
+import {useRecoilState, useSetRecoilState} from 'recoil';
+import {loginPost} from '../api/login';
 
-function LoginScreen(): JSX.Element {
+function LoginScreen({navigation}: any): JSX.Element {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
+  const setUserCode = useSetRecoilState(userCodeSelector);
   return (
     <SafeAreaView style={style.container}>
-      <Header title="로그인" marginBottom={23} />
+      <Header
+        title="로그인"
+        marginBottom={23}
+        onPress={() => {
+          navigation.navigate('LaunchScreen');
+        }}
+      />
       <Wrap style={{gap: 12}}>
         <CustomInput
           placeholder="군번"
@@ -44,7 +52,22 @@ function LoginScreen(): JSX.Element {
             <Caption style={style.caption}>비밀번호 찾기</Caption>
           </TouchableHighlight>
         </View>
-        <CustomButton title="로그인" activate={id !== '' && password !== ''} />
+        <CustomButton
+          title="로그인"
+          activate={id !== '' && password !== ''}
+          onPress={async () => {
+            const success = await loginPost({
+              military_serial_number: id,
+              password: password,
+            });
+            if (success) {
+              setUserCode({
+                military_serial_number: id,
+              });
+              navigation.navigate('MainScreen');
+            }
+          }}
+        />
         <View style={{height: 17}} />
       </Wrap>
     </SafeAreaView>

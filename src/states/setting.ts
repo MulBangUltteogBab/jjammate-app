@@ -27,3 +27,42 @@ export const autoLoginState = selector({
     }
   },
 });
+
+interface UserCode {
+  military_serial_number: string;
+}
+
+const userCodeAtom = atom<UserCode>({
+  key: 'userCodeAtom',
+  default: {
+    military_serial_number: '',
+  },
+  effects: [
+    ({setSelf}) => {
+      AsyncStorage.getItem('military_serial_number').then(code => {
+        setSelf({
+          military_serial_number: code ? code : '',
+        });
+      });
+    },
+  ],
+});
+
+export const userCodeSelector = selector({
+  key: 'userCodeSelector',
+  get: ({get}) => {
+    return get(userCodeAtom);
+  },
+  set: ({set}, code) => {
+    set(userCodeAtom, code);
+    const userCode = code as UserCode;
+    try {
+      AsyncStorage.setItem(
+        'military_serial_number',
+        userCode.military_serial_number,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  },
+});

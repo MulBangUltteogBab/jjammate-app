@@ -15,12 +15,6 @@ type RegisterDepartmentScreenProps = {
   route: any;
   navigation: any;
 };
-
-type Department = {
-  id: number;
-  name: string;
-};
-
 function RegisterDepartmentScreen({
   index,
   route,
@@ -30,14 +24,12 @@ function RegisterDepartmentScreen({
   const [userInfo, setUserInfo] = useRecoilState(registerInfoAtom);
   // 각 페이지 완료 상태
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
-  // textInput 값
-  const [department, setDepartment] = useState('');
   // 부대 리스트
-  const [dataList, setDataList] = useState<Department[]>([
-    {id: 0, name: '계룡'},
-    {id: 1, name: '계룡1'},
-    {id: 2, name: '계룡2'},
-    {id: 3, name: '계룡3'},
+  const [dataList, setDataList] = useState<string[]>([
+    'test1',
+    'test2',
+    'test3',
+    'test4',
   ]);
   return (
     <View style={{height: '100%'}}>
@@ -54,13 +46,12 @@ function RegisterDepartmentScreen({
         onChangeText={text => {
           setUserInfo({
             ...userInfo,
-            department: -1,
+            department: text,
           });
           setIsReady({
             ...isReady,
             [index]: false,
           });
-          setDepartment(text);
           if (text.length > 2) {
             //api 호출
             /*
@@ -73,8 +64,10 @@ function RegisterDepartmentScreen({
             */
           }
         }}
-        wrapStyle={department.length > 0 ? style.inputActive : style.input}
-        value={department}
+        wrapStyle={
+          userInfo.department.length > 0 ? style.inputActive : style.input
+        }
+        value={userInfo.department}
       />
       <View style={style.itemWrap}>
         {dataList.length > 0 &&
@@ -83,18 +76,17 @@ function RegisterDepartmentScreen({
             .map(value => {
               return (
                 <TouchableOpacity
-                  key={value.id}
+                  key={value}
                   style={[
                     style.item,
-                    userInfo.department == value.id
+                    userInfo.department === value
                       ? style.selected
                       : style.nonSelected,
                   ]}
                   onPress={() => {
-                    setDepartment(value.name);
                     setUserInfo({
                       ...userInfo,
-                      department: value.id,
+                      department: value,
                     });
                     setIsReady({
                       ...isReady,
@@ -102,7 +94,7 @@ function RegisterDepartmentScreen({
                     });
                   }}>
                   <Body2 style={{color: designToken.color.Grary.Gray900}}>
-                    {value.name}
+                    {value}
                   </Body2>
                 </TouchableOpacity>
               );

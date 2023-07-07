@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
-    "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-native-community/cli": "^11.3.1",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-native-picker/picker": "^2.4.10",
@@ -19,6 +19,8 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
+    "axios": "^1.4.0",
+    "jwt-decode": "^3.1.2",
     "react": "18.2.0",
     "react-native": "0.71.10",
     "react-native-bootsplash": "^4.7.2",
@@ -36,6 +38,7 @@
     "react-native-svg": "^13.9.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^9.2.0",
     "recoil": "^0.7.7"
   },

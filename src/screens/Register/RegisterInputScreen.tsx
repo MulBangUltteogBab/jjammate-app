@@ -11,9 +11,9 @@ import designToken from '../../assets/design-tokens';
 // 화면 정보
 export enum InfoType {
   // 닉네임 입력
-  nickName = 'nickName',
+  username = 'username',
   // 군번 입력
-  serialNumber = 'serialNumber',
+  military_serial_number = 'military_serial_number',
   // 비번 입력
   password = 'password',
   // 비번 확인
@@ -38,14 +38,14 @@ function RegisterInputScreen({
   const [userInfo, setUserInfo] = useRecoilState(registerInfoAtom);
   const [isReady, setIsReady] = useRecoilState(isReadyAtom);
   const titleContent = {
-    nickName: '이름이 무엇인가요?',
-    serialNumber: '군번이 무엇인가요?',
+    username: '이름이 무엇인가요?',
+    military_serial_number: '군번이 무엇인가요?',
     password: '비밀번호를 입력해주세요',
     passwordConfirm: '비밀번호를 다시 한번 입력해주세요',
   };
   const placeholderContent = {
-    nickName: '이름?',
-    serialNumber: '군번',
+    username: '이름?',
+    military_serial_number: '군번',
     password: '비밀번호',
     passwordConfirm: '비밀번호 확인',
   };

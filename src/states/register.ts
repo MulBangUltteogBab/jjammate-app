@@ -3,15 +3,16 @@ import {atom} from 'recoil';
 export const registerInfoAtom = atom({
   key: 'userInfo',
   default: {
-    nickName: '',
-    serialNumber: '',
+    username: '',
+    military_serial_number: '',
     password: '',
     passwordConfirm: '',
-    department: -1,
+    department: '',
     height: 0,
     weight: 0,
     age: 0,
-    gender: '',
+    sex: '',
+    agreement: false,
   },
 });
 
@@ -27,14 +28,4 @@ export const isReadyAtom = atom({
     6: false,
     7: true,
   } as {[key: number]: boolean},
-});
-
-export const registerAgreeAtom = atom({
-  key: 'registerAgree',
-  default: {
-    age: false,
-    term: false,
-    privacy: false,
-    ad: false,
-  },
 });

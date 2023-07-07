@@ -4,8 +4,11 @@ import Wrap from './Wrap';
 import Header from './Header';
 import Body2 from '../text/Body2';
 import {Policy} from '../../assets/policy';
-
-const PolicyModal = ({visible, setVisible}: any) => {
+type PolicyModalProps = {
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const PolicyModal = ({visible, setVisible}: PolicyModalProps) => {
   return (
     <Modal visible={visible}>
       <Header
