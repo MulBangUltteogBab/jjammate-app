@@ -1,8 +1,7 @@
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import designToken from '../assets/design-tokens';
-import BellIcon from '../assets/icons/bell.svg';
 import Wrap from '../components/common/Wrap';
 import LargeTitle from '../components/text/LargeTitle';
 import HomeLogo from '../assets/icons/home-logo.svg';
@@ -13,11 +12,18 @@ import Headline2 from '../components/text/Headline2';
 import Body2 from '../components/text/Body2';
 import NutrientRatio from '../components/nutrition/NutrientRatio';
 import PxRecommend from '../components/nutrition/PxRecommend';
-import {useRecoilValue} from 'recoil';
-import {getDietSelector, kcalSelector, nutritionSelector} from '../states/home';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {
+  dietAtom,
+  getDietSelector,
+  kcalSelector,
+  nutritionSelector,
+} from '../states/home';
 import {userInfoSelector} from '../states/user';
 import CardView from '../components/common/CardView';
 import Headline1 from '../components/text/Headline1';
+import Notice from '../components/common/Notice';
+import {Shadow} from 'react-native-shadow-2';
 
 function HomeScreen(): JSX.Element {
   // 노치 같은 영역 너비, 높이 받기
@@ -25,8 +31,11 @@ function HomeScreen(): JSX.Element {
   const kcalStatus = useRecoilValue(kcalSelector);
   const nutritionStatus = useRecoilValue(nutritionSelector);
   const userInfo = useRecoilValue(userInfoSelector);
-  const diet = useRecoilValue(getDietSelector);
-  console.log(diet);
+  const getDietAPI = useRecoilValue(getDietSelector);
+  const [diet, setDiet] = useRecoilState(dietAtom);
+  useEffect(() => {
+    diet === undefined && setDiet(getDietAPI);
+  }, [diet, getDietAPI, setDiet]);
   return (
     <View>
       <ScrollView
@@ -35,9 +44,7 @@ function HomeScreen(): JSX.Element {
           paddingTop: insets.top,
         }}>
         <Wrap style={{alignItems: 'flex-end', paddingVertical: 19}}>
-          <TouchableOpacity>
-            <BellIcon fill={'white'} />
-          </TouchableOpacity>
+          <Notice />
         </Wrap>
         <Wrap style={{paddingBottom: 31, flexDirection: 'row'}}>
           <View style={{flex: 1}}>
@@ -74,7 +81,7 @@ function HomeScreen(): JSX.Element {
                       />
                     </View>
                     <Title3 style={{textAlign: 'center'}}>
-                      {kcalStatus.remain}
+                      {Math.max(0, kcalStatus.remain)}
                     </Title3>
                   </View>
                   <Caption>잔여 칼로리</Caption>
@@ -121,43 +128,68 @@ function HomeScreen(): JSX.Element {
                 <View
                   style={{
                     flexDirection: 'row',
-                    gap: 8,
+                    gap: 12,
                     paddingBottom: 34,
                     paddingTop: 20,
+                    paddingRight: 40,
                   }}>
-                  <View style={style.menuCard}>
-                    <View style={style.timeCard}>
-                      <Headline2
-                        style={{color: designToken.color.Grary.Gray700}}>
-                        🌥️ 조식
-                      </Headline2>
+                  <Shadow
+                    style={{flex: 1}}
+                    offset={[1, 1]}
+                    startColor={'rgba(73, 73, 73, 0.1)'}
+                    distance={4}>
+                    <View style={style.menuCard}>
+                      <View style={style.timeCard}>
+                        <Headline2
+                          style={{color: designToken.color.Grary.Gray700}}>
+                          🌥️ 조식
+                        </Headline2>
+                      </View>
+                      <View style={{gap: 4}}>
+                        {diet.breakfast.map((menu, index) => (
+                          <Body2 key={index}>{menu.name}</Body2>
+                        ))}
+                      </View>
                     </View>
-                    <View style={{gap: 4}}>
-                      <Body2>test</Body2>
+                  </Shadow>
+                  <Shadow
+                    style={{flex: 1}}
+                    offset={[1, 1]}
+                    startColor={'rgba(73, 73, 73, 0.1)'}
+                    distance={4}>
+                    <View style={style.menuCard}>
+                      <View style={style.timeCard}>
+                        <Headline2
+                          style={{color: designToken.color.Grary.Gray700}}>
+                          ☀ 중식
+                        </Headline2>
+                      </View>
+                      <View style={{gap: 4}}>
+                        {diet.lunch.map((menu, index) => (
+                          <Body2 key={index}>{menu.name}</Body2>
+                        ))}
+                      </View>
                     </View>
-                  </View>
-                  <View style={style.menuCard}>
-                    <View style={style.timeCard}>
-                      <Headline2
-                        style={{color: designToken.color.Grary.Gray700}}>
-                        ☀ 중식
-                      </Headline2>
+                  </Shadow>
+                  <Shadow
+                    style={{flex: 1}}
+                    offset={[1, 1]}
+                    startColor={'rgba(73, 73, 73, 0.1)'}
+                    distance={4}>
+                    <View style={style.menuCard}>
+                      <View style={style.timeCard}>
+                        <Headline2
+                          style={{color: designToken.color.Grary.Gray700}}>
+                          🌙 석식
+                        </Headline2>
+                      </View>
+                      <View style={{gap: 4}}>
+                        {diet.dinner.map((menu, index) => (
+                          <Body2 key={index}>{menu.name}</Body2>
+                        ))}
+                      </View>
                     </View>
-                    <View style={{gap: 4}}>
-                      <Body2>test</Body2>
-                    </View>
-                  </View>
-                  <View style={style.menuCard}>
-                    <View style={style.timeCard}>
-                      <Headline2
-                        style={{color: designToken.color.Grary.Gray700}}>
-                        🌙 석식
-                      </Headline2>
-                    </View>
-                    <View style={{gap: 4}}>
-                      <Body2>test</Body2>
-                    </View>
-                  </View>
+                  </Shadow>
                 </View>
               </ScrollView>
             ) : (
@@ -208,21 +240,13 @@ const style = StyleSheet.create({
     height: '100%',
   },
   menuCard: {
+    flex: 1,
     borderRadius: 16,
     backgroundColor: designToken.color.Grary.White,
-    shadowColor: 'rgba(73, 73, 73)',
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    elevation: 3,
     paddingVertical: 16,
     paddingHorizontal: 14,
     minHeight: 213,
-    width: 146,
-    // flexDirection: 'column',
+    width: 170,
   },
   timeCard: {
     padding: 4,

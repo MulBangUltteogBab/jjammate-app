@@ -40,3 +40,32 @@ export type Nutrition = {
     fat: number;
   };
 };
+
+export type Menu = {
+  name: string;
+  calorie: number;
+  carbohydrate: number;
+  protein: number;
+  fat: number;
+  amount: number;
+};
+
+export type Diet = {
+  breakfast: Menu[];
+  lunch: Menu[];
+  dinner: Menu[];
+};
+
+export type PxFood = {
+  name: string;
+  calorie: number;
+  carbohydrate: number;
+  protein: number;
+  fat: number;
+  amount: number;
+  image: string;
+};
+
+export type PxFoods = {
+  pxfoods: PxFood[];
+};

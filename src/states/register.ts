@@ -1,5 +1,4 @@
-import {atom, selector} from 'recoil';
-import {basePost} from './utils';
+import {atom} from 'recoil';
 
 export const registerInfoAtom = atom({
   key: 'registerInfo',

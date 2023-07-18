@@ -2,8 +2,8 @@ import {StyleSheet, View} from 'react-native';
 import Title1 from '../../components/text/Title1';
 import designToken from '../../assets/design-tokens';
 import Body2 from '../../components/text/Body2';
-import {Key, useState} from 'react';
-import {WorriorType} from '../../@types/exercise';
+import {Key, useEffect, useState} from 'react';
+import React from 'react';
 import WorriorCard from '../../components/Exercise/WorriorCard';
 import Wrap from '../../components/common/Wrap';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
@@ -15,6 +15,13 @@ import CardView from '../../components/common/CardView';
 import {Caption} from 'react-native-paper';
 import {Circle, Text} from 'react-native-svg';
 import WorriorModal from '../../components/Exercise/WorriorModal';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {
+  exerciseDaysSelector,
+  getWorriorSelector,
+  weekRecordSelector,
+} from '../../states/exercise';
+import {trigerAtom} from '../../states/utils';
 
 const Dots = ({x, y, data}: any) => {
   return (
@@ -39,7 +46,7 @@ const Labels = ({x, y, data}: any) => {
         <Text
           key={index}
           x={x(index) - 5}
-          y={y(value) + 20}
+          y={y(value) - 15}
           fontSize={10}
           fontFamily="SUIT-Regular"
           fill={designToken.color.Green}>
@@ -49,36 +56,76 @@ const Labels = ({x, y, data}: any) => {
     </>
   );
 };
-function WarriorScreen({navigation}: any): JSX.Element {
-  const [day, setDay] = useState(1);
+
+// export type WorriorType = {
+//   id: number;
+//   title: string;
+//   state: string;
+//   count: number;
+//   icon: string;
+//   time: number;
+// };
+
+function WarriorScreen(): JSX.Element {
+  const [complete, setComplete] = useState(false);
+  const day = useRecoilValue(exerciseDaysSelector);
+  const weekRecord = useRecoilValue(weekRecordSelector);
   const [now, setNow] = useState(0);
   const [visible, setVisible] = useState(false);
   const [nowChart, setNowChart] = useState(0);
-  const [worriors, setWorriors] = useState<WorriorType[]>([
-    {id: 0, title: '뜀걸음', count: 0, state: '합격', icon: 'leg', time: 1234},
-    {
-      id: 1,
-      title: '윗몸일으키기',
-      count: 23,
-      state: '불합격',
-      icon: 'cough',
-      time: 1234,
-    },
-    {id: 2, title: '팔굽혀펴기', count: 34, state: '', icon: 'arm', time: 0},
-  ]);
-  const [datas, setDatas] = useState([
-    [50, 10, 40, 20, 67, 70, 43, 54],
-    [50, 10, 25, 40, 37, 10, 33, 54],
-    [50, 30, 60, 30, 27, 70, 53, 54],
-  ]);
+  const datas = [
+    Object.entries(weekRecord.record).map(([_, value]) => {
+      const tmp = value.run.split(':');
+      return Number(tmp[0]) * 60 + Number(tmp[1]);
+    }),
+    Object.entries(weekRecord.record).map(([_, value]) => value.situp),
+    Object.entries(weekRecord.record).map(([_, value]) => value.pushup),
+  ];
 
+  const worriors = useRecoilValue(getWorriorSelector);
+  // const refreshWorriors = recoilfre
+  // const [worriors, setWorrios] = useRecoilState(WorriorAtom);
+  const xaxis = Object.entries(weekRecord.record).map(([key, _]) => key);
+
+  const setTriger = useSetRecoilState(trigerAtom);
+  // useEffect(() => {
+  //   (worriors === undefined || worriors.length === 0) && setWorrios(getWorrior);
+  // }, [getWorrior, setWorrios, worriors]);
+
+  useEffect(() => {
+    if (worriors) {
+      for (let i = 0; i < 3; i++) {
+        if (worriors[i].record != '00:00' && worriors[i].record != '0') {
+          if (i === 2) {
+            console.log(now);
+            setComplete(true);
+          } else {
+            setNow(i + 1);
+          }
+        }
+      }
+    }
+  }, [now, worriors]);
+
+  console.log(worriors);
   return (
     <>
-      <WorriorModal
-        worrior={worriors[now]}
-        visible={visible}
-        setVisible={setVisible}
-      />
+      {worriors && (
+        <WorriorModal
+          next={() => {
+            // setWorrios(getWorrior);
+            if (now < 2) {
+              setNow(now + 1);
+            } else {
+              setComplete(true);
+            }
+            setTriger(pre => pre + 1);
+          }}
+          worrior={worriors[now]}
+          visible={visible}
+          setVisible={setVisible}
+        />
+      )}
       <View
         style={{
           backgroundColor: designToken.color.Grary.Gray100,
@@ -96,17 +143,24 @@ function WarriorScreen({navigation}: any): JSX.Element {
               }}>
               <Body2>운동 시작한지</Body2>
               <Title1 style={{color: designToken.color.Green}}>
-                Day {day}
+                Day {day.days}
               </Title1>
             </View>
             <View style={style.cardWrap}>
-              {worriors.map((worrior, index) => {
-                return <WorriorCard {...worrior} key={index} />;
-              })}
+              {worriors &&
+                worriors.map((item, index) => {
+                  return <WorriorCard {...item} key={index} />;
+                })}
             </View>
             <CustomButton
-              title={now > 0 ? '운동 계속하기' : '운동 시작하기'}
-              activate={true}
+              title={
+                now > 0
+                  ? complete
+                    ? '오늘 운동 완료'
+                    : '운동 계속하기'
+                  : '운동 시작하기'
+              }
+              activate={!complete}
               onPress={() => {
                 setVisible(true);
               }}
@@ -191,6 +245,13 @@ function WarriorScreen({navigation}: any): JSX.Element {
                 </LineChart>
                 <XAxis
                   data={datas[nowChart]}
+                  formatLabel={(_, index) => {
+                    if (xaxis[index]) {
+                      return xaxis[index].split('-').slice(1, 3).join('.');
+                    } else {
+                      return index;
+                    }
+                  }}
                   style={{marginTop: 10}}
                   contentInset={{left: 20, right: 20}}
                 />

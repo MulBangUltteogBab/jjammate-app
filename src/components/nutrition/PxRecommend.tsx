@@ -6,79 +6,20 @@ import PxListScreen from '../../screens/PxListScreen';
 import Title3 from '../text/Title3';
 import Wrap from '../common/Wrap';
 import RightAllrow from '../../assets/icons/right.svg';
-import {PxItemType} from '../../@types/nutrition';
 import PxItem from './PxItem';
+import {getPxFoodsSelector, pxFoodsAtom} from '../../states/home';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {Dimensions} from 'react-native';
 
-const PxRecommend = () => {
+const PxRecommend = ({isTotal = false}: any) => {
+  const getPxFoodAPI = useRecoilValue(getPxFoodsSelector);
+  const [pxfoods, setPxfoods] = useRecoilState(pxFoodsAtom);
   const [pxListVisible, setPxListVisible] = useState(false);
-  const [pxItems, setPxItems] = useState<PxItemType[]>([]);
   useEffect(() => {
-    setPxItems([
-      {
-        id: '0',
-        name: 'test',
-        url: '',
-        kcal: 1234,
-        carbohydrate: {
-          value: 1234,
-          total: 2000,
-          percent: 55,
-        },
-        protein: {
-          value: 1234,
-          total: 2000,
-          percent: 30,
-        },
-        fat: {
-          value: 1234,
-          total: 2000,
-          percent: 15,
-        },
-      },
-      {
-        id: '1',
-        name: 'test',
-        url: '',
-        kcal: 1234,
-        carbohydrate: {
-          value: 1234,
-          total: 2000,
-          percent: 55,
-        },
-        protein: {
-          value: 1234,
-          total: 2000,
-          percent: 30,
-        },
-        fat: {
-          value: 1234,
-          total: 2000,
-          percent: 15,
-        },
-      },
-      {
-        id: '2',
-        name: 'test',
-        url: '',
-        kcal: 1234,
-        carbohydrate: {
-          value: 1234,
-          total: 2000,
-          percent: 55,
-        },
-        protein: {
-          value: 1234,
-          total: 2000,
-          percent: 30,
-        },
-        fat: {
-          value: 1234,
-          total: 2000,
-          percent: 15,
-        },
-      },
-    ]);
-  }, []);
+    pxfoods === undefined && setPxfoods(getPxFoodAPI);
+    // console.log(pxfoods. + '######');
+  }, [getPxFoodAPI, pxfoods, setPxfoods]);
+  const windowWidth = Dimensions.get('window').width;
   return (
     <View>
       <PxListScreen
@@ -86,6 +27,7 @@ const PxRecommend = () => {
         back={() => {
           setPxListVisible(false);
         }}
+        isTotal={isTotal}
       />
       <Wrap>
         <View
@@ -97,10 +39,12 @@ const PxRecommend = () => {
           }}>
           <View>
             <Title3 style={{color: designToken.color.Grary.Gray800}}>
-              PX 상품 추천
+              {isTotal ? 'PX 음식 상품' : 'PX 상품 추천'}
             </Title3>
             <Caption style={{color: designToken.color.Grary.Gray700}}>
-              BMI를 분석하여 최적의 상품을 추천해드려요
+              {isTotal
+                ? 'PX 음식 상품들의 리스트를 확인해보세요!'
+                : 'BMI를 분석하여 최적의 상품을 추천해드려요'}
             </Caption>
           </View>
           <TouchableOpacity
@@ -115,14 +59,22 @@ const PxRecommend = () => {
         horizontal
         style={{paddingLeft: '5%'}}
         showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', gap: 8}}>
-          {pxItems.map(data => {
-            return (
-              <View style={style.pxItem} key={data.id}>
-                <PxItem data={data} />
-              </View>
-            );
-          })}
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 8,
+            paddingRight: windowWidth * 0.1,
+          }}>
+          {pxfoods &&
+            pxfoods.pxfoods
+              .slice(0, Math.min(10, pxfoods.pxfoods.length))
+              .map((food, index) => {
+                return (
+                  <View style={style.pxItem} key={index}>
+                    <PxItem data={food} />
+                  </View>
+                );
+              })}
         </View>
       </ScrollView>
     </View>
@@ -134,5 +86,6 @@ export default PxRecommend;
 const style = StyleSheet.create({
   pxItem: {
     width: 140,
+    flex: 1,
   },
 });

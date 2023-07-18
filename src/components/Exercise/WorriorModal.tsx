@@ -9,16 +9,22 @@ import CustomButton from '../common/CustomButton';
 import designToken from '../../assets/design-tokens';
 import CompleteModal from '../common/CompleteModal';
 import CustomInput from '../common/CustomInput';
+import http from '../../utils/http';
+import {useRecoilValue} from 'recoil';
+import {userCodeSelector} from '../../states/setting';
+import showToast from '../../utils/Toast';
 type WorriorModalProps = {
   worrior: WorriorType;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  next: () => void;
 };
 
-const Timer = ({id = 0, onComplete}: any) => {
+const Timer = ({type, onComplete}: any) => {
+  const code = useRecoilValue(userCodeSelector);
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const limit = (id === 0 ? 21 : 2) * 60;
+  const limit = (type === 'leg' ? 21 : 2) * 60;
   useEffect(() => {
     const timer = setInterval(() => {
       if (isRunning && time < limit) {
@@ -77,13 +83,26 @@ const Timer = ({id = 0, onComplete}: any) => {
         <CustomButton
           title={isRunning ? '중단' : time > 0 ? '기록하기' : '시작'}
           activate={true}
-          onPress={() => {
+          onPress={async () => {
             if (isRunning) {
               setIsRunning(false);
             } else {
               if (time > 0) {
-                // setComplete(true);
                 onComplete();
+                if (type === 'leg') {
+                  try {
+                    await http.post('/exercise/api/setruncount/', {
+                      ...code,
+                      run: `${String(Math.floor(time / 60)).padStart(
+                        2,
+                        '0',
+                      )}:${String(time % 60).padStart(2, '0')}`,
+                    });
+                    showToast('기록 되었습니다.', 'success');
+                  } catch (err) {
+                    console.log(err);
+                  }
+                }
               } else {
                 setIsRunning(true);
               }
@@ -97,7 +116,9 @@ const Timer = ({id = 0, onComplete}: any) => {
   );
 };
 
-const Input = ({onComplete}: any) => {
+const Input = ({onComplete, type}: any) => {
+  const code = useRecoilValue(userCodeSelector);
+  const [count, setCount] = useState(0);
   return (
     <View style={{flex: 1}}>
       <Wrap>
@@ -106,6 +127,7 @@ const Input = ({onComplete}: any) => {
           개수를 입력해주세요
         </Title1>
         <CustomInput
+          keyboardType="number-pad"
           style={{
             fontFamily: 'SUIT-Regular',
             fontSize: 22,
@@ -114,15 +136,33 @@ const Input = ({onComplete}: any) => {
           right={
             <Title1 style={{color: designToken.color.Grary.Black}}>개</Title1>
           }
+          onChangeText={text => {
+            setCount(Number(text));
+          }}
         />
       </Wrap>
       <View style={{flex: 1}} />
       <Wrap style={{marginBottom: 10}}>
         <CustomButton
           activate={true}
-          onPress={() => {
+          onPress={async () => {
             onComplete();
-            //api 호출
+            try {
+              if (type === 'arm') {
+                await http.post('/exercise/api/setpushupcount/', {
+                  ...code,
+                  pushup: count,
+                });
+              } else if (type === 'body') {
+                await http.post('/exercise/api/setsitupcount/', {
+                  ...code,
+                  situp: count,
+                });
+              }
+              showToast('기록 되었습니다.', 'success');
+            } catch (err) {
+              console.log(err);
+            }
           }}
           title="완료"
         />
@@ -131,7 +171,12 @@ const Input = ({onComplete}: any) => {
   );
 };
 
-const WorriorModal = ({worrior, visible, setVisible}: WorriorModalProps) => {
+const WorriorModal = ({
+  worrior,
+  visible,
+  setVisible,
+  next,
+}: WorriorModalProps) => {
   const [onInput, setOnInput] = useState(false);
   const [complete, setComplete] = useState(false);
   return (
@@ -140,6 +185,7 @@ const WorriorModal = ({worrior, visible, setVisible}: WorriorModalProps) => {
         visible={complete}
         title="운동으로 가기"
         onPress={() => {
+          next();
           setComplete(false);
           setVisible(false);
           setOnInput(false);
@@ -154,13 +200,17 @@ const WorriorModal = ({worrior, visible, setVisible}: WorriorModalProps) => {
         />
         {!onInput && (
           <Timer
-            id={worrior.id}
+            type={worrior.icon}
             onComplete={
-              worrior.id != 0 ? () => setComplete(true) : () => setOnInput(true)
+              worrior.icon === 'leg'
+                ? () => setComplete(true)
+                : () => setOnInput(true)
             }
           />
         )}
-        {onInput && <Input onComplete={() => setComplete(true)} />}
+        {onInput && (
+          <Input onComplete={() => setComplete(true)} type={worrior.icon} />
+        )}
       </SafeAreaView>
     </Modal>
   );

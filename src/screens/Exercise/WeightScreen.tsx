@@ -1,3 +1,4 @@
+import React from 'react';
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Title1 from '../../components/text/Title1';
 import Wrap from '../../components/common/Wrap';
@@ -8,7 +9,6 @@ import WeightCard from '../../components/Exercise/WeightCard';
 import CustomButton from '../../components/common/CustomButton';
 import {ScrollView} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ExerciseType} from '../../@types/exercise';
 import Header from '../../components/common/Header';
 import Headline2 from '../../components/text/Headline2';
 import Title2 from '../../components/text/Title2';
@@ -20,41 +20,24 @@ import Title3 from '../../components/text/Title3';
 import CheckIcon from '../../assets/icons/check-on.svg';
 import {ProgressCircle} from 'react-native-svg-charts';
 import CompleteModal from '../../components/common/CompleteModal';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {
+  exerciseAtom,
+  exerciseDaysSelector,
+  exerciseSelector,
+} from '../../states/exercise';
+import {userCodeSelector} from '../../states/setting';
+import http from '../../utils/http';
+import {trigerAtom} from '../../states/utils';
 
 function WeightScreen(): JSX.Element {
+  const code = useRecoilValue(userCodeSelector);
+
   const insets = useSafeAreaInsets();
-  const [day, setDay] = useState(1);
-  const [exercises, setExercise] = useState<ExerciseType[]>([
-    {
-      id: 1,
-      title: '덤벨 벤치 프레스',
-      tags: ['가슴', '덤벨'],
-      icon: 'cough',
-      explains: [
-        '벤치 끝 쪽에 엉덩이를 대고 앉은 다음 양손에 덤벨을 잡습니다.',
-        '그 상태에서 덤벨을 가슴 쪽으로 가져와 벤치에 눕습니다.',
-        '누운 상태에서 견갑골을 벤치에 고정하고 양손에 든 덤벨을 위로 올립니다.',
-        '덤벨을 너무 위로 올려 어깨가 들리지 않도록 하며 내릴때에는 가슴에 자극을 느끼며 흉곽을 펼치며 내려옵니다.',
-      ],
-      sets: ['15', '15', '15', '15'],
-    },
-    {
-      id: 2,
-      title: '덤벨 벤치 프레스',
-      tags: ['가슴', '덤벨'],
-      icon: 'arm',
-      explains: ['세부사항1', '세부사항2'],
-      sets: ['15', '15', '15', '15'],
-    },
-    {
-      id: 3,
-      title: '덤벨 벤치 프레스',
-      tags: ['가슴', '덤벨'],
-      icon: 'leg',
-      explains: ['세부사항1', '세부사항2'],
-      sets: ['15', '15', '15', '15'],
-    },
-  ]);
+  const day = useRecoilValue(exerciseDaysSelector);
+  const getExercise = useRecoilValue(exerciseSelector);
+  const [exercises, setExercises] = useRecoilState(exerciseAtom);
+
   const [during, setDuring] = useState(false);
   const [nowExcersie, setNowExcersie] = useState(0);
   const [nowSet, setNowSet] = useState(0);
@@ -69,6 +52,25 @@ function WeightScreen(): JSX.Element {
   const [selectedRestTime, setSelectedRestTime] = useState(0);
   const [visibleComplete, setVisibleComplete] = useState(false);
 
+  const [complete, setComplete] = useState(false);
+
+  const setTriger = useSetRecoilState(trigerAtom);
+  useEffect(() => {
+    if (exercises) {
+      for (let i = 0; i < exercises.data.length; i++) {
+        if (exercises.data[i].done) {
+          if (i === exercises.data.length - 1) {
+            setComplete(true);
+          } else {
+            setNowExcersie(i + 1);
+          }
+        }
+      }
+    } else {
+      setExercises(getExercise);
+    }
+  }, [exercises, getExercise, setExercises]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       if (onRest && time > 0) {
@@ -77,23 +79,28 @@ function WeightScreen(): JSX.Element {
     }, 1000);
     return () => clearInterval(timer);
   }, [onRest, time]);
+
   return (
     <>
       <Modal visible={during}>
-        <ExplainModal
-          exercise={exercises[nowExcersie]}
-          visible={explain}
-          setVisible={setExplain}
-        />
+        {exercises && exercises.data.length > 0 && (
+          <ExplainModal
+            exercise={exercises.data[nowExcersie]}
+            visible={explain}
+            setVisible={setExplain}
+          />
+        )}
         <CompleteModal
-          onPress={() => {
+          onPress={async () => {
             // 운동 완료
+            setComplete(true);
             setNowSet(0);
             setNowExcersie(0);
             setVisibleComplete(false);
             setOnRest(false);
             setRestModal(false);
             setDuring(false);
+            setTriger(pre => pre + 1);
           }}
           visible={visibleComplete}
         />
@@ -176,12 +183,36 @@ function WeightScreen(): JSX.Element {
               <CustomButton
                 title={onRest ? '휴식 종료' : '휴식 시작'}
                 activate={true}
-                onPress={() => {
+                onPress={async () => {
                   if (onRest) {
-                    setRestModal(false);
-                    if (nowSet === exercises[nowExcersie].sets.length - 1) {
+                    if (nowSet === 3) {
                       setNowSet(0);
-                      if (nowExcersie === exercises.length - 1) {
+                      try {
+                        const {data} = await http.post(
+                          '/exercise/api/setexercise/',
+                          {
+                            ...code,
+                            index: exercises.data[nowExcersie].id,
+                          },
+                        );
+                        console.log(data);
+                        setExercises({
+                          data: exercises.data.map((item, index) => {
+                            if (index === nowExcersie) {
+                              return {
+                                ...item,
+                                done: true,
+                              };
+                            }
+                            return item;
+                          }),
+                        });
+                      } catch (err) {
+                        console.log(
+                          err + '    ' + '/exercise/api/setexercise/',
+                        );
+                      }
+                      if (nowExcersie === exercises.data.length - 1) {
                         setVisibleComplete(true);
                       } else {
                         setNowExcersie(nowExcersie + 1);
@@ -190,6 +221,7 @@ function WeightScreen(): JSX.Element {
                       setNowSet(nowSet + 1);
                     }
                     setOnRest(false);
+                    setRestModal(false);
                     setTime(restTimes[selectedRestTime]);
                   } else {
                     setOnRest(true);
@@ -224,32 +256,36 @@ function WeightScreen(): JSX.Element {
               }}>
               <View style={style.container}>
                 <View style={style.iconCover}>
-                  {exercises[nowExcersie].icon === 'cough' && (
-                    <CoughingIcon width={42} height={42} />
-                  )}
-                  {exercises[nowExcersie].icon === 'arm' && (
-                    <ArmIcon width={42} height={42} />
-                  )}
-                  {exercises[nowExcersie].icon === 'leg' && (
-                    <LegIcon width={42} height={42} />
-                  )}
+                  {exercises &&
+                    exercises.data.length > 0 &&
+                    exercises.data[nowExcersie].part === 'body' && (
+                      <CoughingIcon width={42} height={42} />
+                    )}
+                  {exercises &&
+                    exercises.data.length > 0 &&
+                    exercises.data[nowExcersie].part === 'arm' && (
+                      <ArmIcon width={42} height={42} />
+                    )}
+                  {exercises &&
+                    exercises.data.length > 0 &&
+                    exercises.data[nowExcersie].part === 'leg' && (
+                      <LegIcon width={42} height={42} />
+                    )}
                 </View>
                 <View style={{gap: 8}}>
                   <View style={[style.row, {gap: 4}]}>
-                    {exercises[nowExcersie].tags.map(
-                      (item: any, index: number) => {
-                        return (
-                          <View style={style.tag} key={'tag' + index}>
-                            <Headline2 style={{color: designToken.color.Green}}>
-                              {item}
-                            </Headline2>
-                          </View>
-                        );
-                      },
-                    )}
+                    <View style={style.tag}>
+                      <Headline2 style={{color: designToken.color.Green}}>
+                        {exercises &&
+                          exercises.data.length > 0 &&
+                          exercises.data[nowExcersie].tag}
+                      </Headline2>
+                    </View>
                   </View>
                   <Title2 style={{color: designToken.color.Grary.Gray900}}>
-                    {exercises[nowExcersie].title}
+                    {exercises &&
+                      exercises.data.length > 0 &&
+                      exercises.data[nowExcersie].title}
                   </Title2>
                 </View>
               </View>
@@ -272,7 +308,7 @@ function WeightScreen(): JSX.Element {
             style={{marginBottom: 10, flex: 1}}>
             <Wrap>
               <View style={{gap: 12}}>
-                {exercises[nowExcersie].sets.map((item: any, index: number) => {
+                {[10, 10, 10, 10].map((item: any, index: number) => {
                   return (
                     <View
                       key={'set' + index}
@@ -321,24 +357,25 @@ function WeightScreen(): JSX.Element {
               {alignItems: 'flex-end', gap: 7, marginTop: 16},
             ]}>
             <Body2>운동 시작한지</Body2>
-            <Title1 style={{color: designToken.color.Green}}>Day {day}</Title1>
+            <Title1 style={{color: designToken.color.Green}}>
+              Day {day.days}
+            </Title1>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={[style.scroll, {marginBottom: insets.bottom + 80}]}>
             <View style={style.cardWrap}>
-              {exercises.map(exercise => {
-                return (
-                  <WeightCard key={'exercise' + exercise.id} {...exercise} />
-                );
-              })}
+              {exercises &&
+                exercises.data.map(exercise => {
+                  return <WeightCard key={exercise.title} {...exercise} />;
+                })}
             </View>
             <CustomButton
-              title="추천 운동 시작하기"
+              title={complete ? '오늘의 운동 완료' : '추천 운동 시작하기'}
               onPress={() => {
                 setDuring(true);
               }}
-              activate={true}
+              activate={!complete}
             />
             <View style={{height: 10}} />
           </ScrollView>

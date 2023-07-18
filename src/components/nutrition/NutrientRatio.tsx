@@ -10,6 +10,11 @@ type NutrientRatioProps = {
   column?: boolean;
 };
 const NutrientRatio = ({nutrition, column = false}: NutrientRatioProps) => {
+  // console.log(nutrition);
+  const total =
+    nutrition.percent.carbohydrate +
+    nutrition.percent.protein +
+    nutrition.percent.fat;
   return (
     <View>
       <View style={style.container}>
@@ -18,7 +23,7 @@ const NutrientRatio = ({nutrition, column = false}: NutrientRatioProps) => {
             style.stick,
             {
               backgroundColor: designToken.color.Green,
-              flex: Math.max(nutrition.percent.carbohydrate, 1),
+              flex: total === 0 ? 1 : nutrition.percent.carbohydrate,
             },
           ]}>
           <Caption style={style.stickPercent}>
@@ -30,7 +35,7 @@ const NutrientRatio = ({nutrition, column = false}: NutrientRatioProps) => {
             style.stick,
             {
               backgroundColor: designToken.color.Blue,
-              flex: Math.max(nutrition.percent.protein, 1),
+              flex: total === 0 ? 1 : nutrition.percent.protein,
             },
           ]}>
           <Caption style={style.stickPercent}>
@@ -42,7 +47,7 @@ const NutrientRatio = ({nutrition, column = false}: NutrientRatioProps) => {
             style.stick,
             {
               backgroundColor: designToken.color.Pink,
-              flex: Math.max(nutrition.percent.fat, 1),
+              flex: total === 0 ? 1 : nutrition.percent.fat,
             },
           ]}>
           <Caption style={style.stickPercent}>{nutrition.percent.fat}%</Caption>

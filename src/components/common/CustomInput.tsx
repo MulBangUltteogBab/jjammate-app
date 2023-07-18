@@ -12,14 +12,16 @@ import designToken from '../../assets/design-tokens';
 interface Props extends TextInputProps {
   //오른 쪽에 아이콘(화살표 같은거)
   right?: ReactNode;
+  left?: ReactNode;
   //텍스트인풋 래핑하고 있는 뷰 스타일
   wrapStyle?: ViewStyle;
 }
 
 const CustomInput = (props: Props) => {
-  const {right, ...inputProps} = props;
+  const {right, left, ...inputProps} = props;
   return (
     <View style={[style.wrap, props.wrapStyle]}>
+      {left}
       <TextInput
         {...inputProps}
         style={[style.input, props.style]}

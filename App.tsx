@@ -14,7 +14,7 @@ import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import LaunchScreen from './src/screens/LaunchScreen';
 import {setCustomText} from 'react-native-global-props';
-import {RecoilRoot, useRecoilValue} from 'recoil';
+import {RecoilRoot} from 'recoil';
 import LoginScreen from './src/screens/LoginScreen';
 import designToken from './src/assets/design-tokens';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
@@ -23,7 +23,6 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import MainScreen from './src/screens/MainScreen';
-import {autoLoginState} from './src/states/setting';
 const Stack = createNativeStackNavigator();
 
 const Theme = {
@@ -45,6 +44,7 @@ const ThemePaper = {
 };
 
 function App(): JSX.Element {
+  // const [initScreen, setInitScreen] = React.useState('LaunchScreen');
   const customTextProps = {
     style: {
       fontFamily: 'SUIT-Regular',
@@ -52,10 +52,15 @@ function App(): JSX.Element {
   };
   setCustomText(customTextProps);
   useEffect(() => {
-    const init = async () => {};
+    const init = async () => {
+      // const userCode = await AsyncStorage.getItem('military_serial_number');
+      // const autoLogin = await AsyncStorage.getItem('autoLogin');
+      // if (userCode && autoLogin) {
+      //   setInitScreen('MainScreen');
+      // }
+    };
     init().finally(async () => {
       await RNBootSplash.hide({fade: true, duration: 500});
-      console.log('BootSplash has been hidden successfully');
     });
   }, []);
 
@@ -65,8 +70,8 @@ function App(): JSX.Element {
         <View style={{height: '100%'}}>
           <NavigationContainer theme={Theme}>
             <Stack.Navigator
-              // initialRouteName="LaunchScreen"
               initialRouteName="LaunchScreen"
+              // initialRouteName={initScreen}
               screenOptions={{
                 headerShown: false,
                 animation: 'fade',

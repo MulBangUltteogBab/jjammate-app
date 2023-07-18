@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useEffect, useState} from 'react';
 import {
   Image,
@@ -21,6 +22,12 @@ import Body2 from '../components/text/Body2';
 import PolicyModal from '../components/common/PolicyModal';
 import LicenseModal from '../components/common/LicenseModal';
 import Caption2 from '../components/text/Caption2';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {noticeSelector, userCodeSelector} from '../states/setting';
+import {userInfoSelector} from '../states/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import UpdateUserInfoModal from '../components/Mypage/UpdateUserInfoModal';
 
 const hexToRGB = (hex: any) => {
   hex = hex.replace('#', '');
@@ -30,45 +37,51 @@ const hexToRGB = (hex: any) => {
   const b = hex & 0xff;
   return `rgba(${r}, ${g}, ${b}, 0.1)`;
 };
+const bmiColors = [
+  designToken.color.Blue,
+  designToken.color.Green,
+  '#FFAE18',
+  designToken.color.Pink,
+  designToken.color.Red,
+];
+
 const MyPageScreen = () => {
-  const bmiColors = [
-    designToken.color.Blue,
-    designToken.color.Green,
-    '#FFAE18',
-    designToken.color.Pink,
-    designToken.color.Red,
-  ];
+  const navigation = useNavigation();
+
+  const setCode = useSetRecoilState(userCodeSelector);
+  const [noticeSave, setNoticeSave] = useRecoilState(noticeSelector);
+  const [notice, setNotice] = useState(noticeSave);
+
+  const userInfo = useRecoilValue(userInfoSelector);
+
   const bmiLabels = ['저체중', '정상', '과체중', '비만', '고도비만'];
   const [bmiList, setBmiList] = useState([18.5, 23, 25, 30]);
-  //   const bmiTerm = [18.5, 23, 25, 30];
-  const [bmi, setBmi] = useState(27);
+
   const [bmiIndex, setBmiIndex] = useState(0);
-  const [user, setUser] = useState({
-    name: '김민섭',
-    unit: '계룡대본부대대',
-    code: '1234567890',
-  });
-  const [notice, setNotice] = useState(false);
   const [onPolicy, setOnPolicy] = useState(false);
   const [onLicense, setOnLicense] = useState(false);
 
-  setBmiList;
-  setBmi;
-  setUser;
-
+  const [onUpdate, setOnUpdate] = useState(false);
   useEffect(() => {
     for (let i = 0; i < bmiList.length; i++) {
-      if (bmi < bmiList[i]) {
+      if (userInfo.bmi < bmiList[i]) {
         setBmiIndex(i);
         break;
       }
     }
-    if (bmi > bmiList[bmiList.length - 1]) {
+    if (userInfo.bmi > bmiList[bmiList.length - 1]) {
       setBmiIndex(bmiList.length);
     }
-  }, [bmi, bmiList]);
+  }, [bmiList, userInfo.bmi]);
+  useEffect(() => {
+    setNoticeSave(notice);
+  }, [notice, setNoticeSave]);
+  useEffect(() => {
+    setNoticeSave(notice);
+  }, [notice, setNoticeSave]);
   return (
     <>
+      <UpdateUserInfoModal visible={onUpdate} setVisible={setOnUpdate} />
       <LicenseModal visible={onLicense} setVisible={setOnLicense} />
       <PolicyModal visible={onPolicy} setVisible={setOnPolicy} />
       <SafeAreaView>
@@ -96,11 +109,17 @@ const MyPageScreen = () => {
               <View style={{gap: 8}}>
                 <View
                   style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-                  <Headline1 style={style.gray900}>{user.name}</Headline1>
-                  <PencilIcon />
+                  <Headline1 style={style.gray900}>
+                    {userInfo.username}
+                  </Headline1>
+                  {/* <PencilIcon /> */}
                 </View>
-                <Headline1 style={style.gray900}>{user.unit}</Headline1>
-                <Headline1 style={style.gray900}>{user.code}</Headline1>
+                <Headline1 style={style.gray900}>
+                  {userInfo.department}
+                </Headline1>
+                <Headline1 style={style.gray900}>
+                  {userInfo.military_serial_number}
+                </Headline1>
               </View>
             </Wrap>
           </CardView>
@@ -135,10 +154,15 @@ const MyPageScreen = () => {
                     color: bmiColors[bmiIndex],
                     backgroundColor: hexToRGB(bmiColors[bmiIndex]),
                   }}>
-                  {bmiLabels[bmiIndex] + ' ' + bmi}
+                  {bmiLabels[bmiIndex] +
+                    ' ' +
+                    Math.round(userInfo.bmi * 100) / 100}
                 </Headline2>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setOnUpdate(true);
+                }}>
                 <PencilIcon width={16} height={16} />
               </TouchableOpacity>
             </Wrap>
@@ -225,7 +249,21 @@ const MyPageScreen = () => {
                 height: 1,
               }}
             />
-            <TouchableOpacity style={style.touch}>
+            <TouchableOpacity
+              style={style.touch}
+              onPress={async () => {
+                // await AsyncStorage.removeItem('military_serial_number');
+                setCode({
+                  military_serial_number: '',
+                });
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{name: 'LaunchScreen'}],
+                  }),
+                );
+                // navigation.navigate('LaunchScreen' as never);
+              }}>
               <Wrap>
                 <Body2 style={style.gray900}>로그아웃</Body2>
               </Wrap>

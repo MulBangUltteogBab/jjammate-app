@@ -16,13 +16,39 @@ const autoLoginAtom = atom({
 export const autoLoginState = selector({
   key: 'autoLoginSelector',
   get: ({get}) => {
-    console.log(get(autoLoginAtom));
     return get(autoLoginAtom);
   },
   set: ({set}, login) => {
     set(autoLoginAtom, login);
     try {
       AsyncStorage.setItem('autoLogin', login.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  },
+});
+
+const noticeAtom = atom({
+  key: 'noticeAtom',
+  default: false,
+  effects: [
+    ({setSelf}) => {
+      AsyncStorage.getItem('notice').then(autoLogin => {
+        setSelf(autoLogin === 'true');
+      });
+    },
+  ],
+});
+
+export const noticeSelector = selector({
+  key: 'noticeSelector',
+  get: ({get}) => {
+    return get(noticeAtom);
+  },
+  set: ({set}, login) => {
+    set(autoLoginAtom, login);
+    try {
+      AsyncStorage.setItem('notice', login.toString());
     } catch (error) {
       console.error(error);
     }
@@ -54,17 +80,19 @@ export const userCodeSelector = selector({
   get: ({get}) => {
     return get(userCodeAtom);
   },
-  set: ({set}, code) => {
+  set: ({set, get}, code) => {
     // console.log(code);
     set(userCodeAtom, code);
     const userCode = code as UserCode;
-    try {
-      AsyncStorage.setItem(
-        'military_serial_number',
-        userCode.military_serial_number,
-      );
-    } catch (error) {
-      console.error(error);
+    if (get(autoLoginAtom)) {
+      try {
+        AsyncStorage.setItem(
+          'military_serial_number',
+          userCode.military_serial_number,
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 });

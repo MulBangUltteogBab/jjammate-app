@@ -1,15 +1,11 @@
-import React, {useState} from 'react';
-import {Image, Modal, ScrollView, StyleSheet, View} from 'react-native';
-import {TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Modal, ScrollView, StyleSheet, View} from 'react-native';
 import CardView from '../common/CardView';
 import ArmIcon from '../../assets/icons/arm.svg';
 import CoughingIcon from '../../assets/icons/coughing_alt.svg';
 import LegIcon from '../../assets/icons/leg.svg';
 import designToken from '../../assets/design-tokens';
-import Body2 from '../text/Body2';
-import Caption2 from '../text/Caption2';
-import {ExerciseType} from '../../@types/exercise';
-import Header from '../common/Header';
+import {Exercise} from '../../@types/exercise';
 import Wrap from '../common/Wrap';
 import CustomButton from '../common/CustomButton';
 import Title2 from '../text/Title2';
@@ -17,7 +13,7 @@ import Headline2 from '../text/Headline2';
 import Body1 from '../text/Body1';
 
 type ExplainModalProps = {
-  exercise: ExerciseType;
+  exercise: Exercise;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -30,30 +26,28 @@ const ExplainModal = ({exercise, visible, setVisible}: ExplainModalProps) => {
           <CardView style={style.overlayCard}>
             <View style={style.container}>
               <View style={style.iconCover}>
-                {exercise.icon === 'cough' && (
+                {exercise.part === 'body' && (
                   <CoughingIcon width={42} height={42} />
                 )}
-                {exercise.icon === 'arm' && <ArmIcon width={42} height={42} />}
-                {exercise.icon === 'leg' && <LegIcon width={42} height={42} />}
+                {exercise.part === 'arm' && <ArmIcon width={42} height={42} />}
+                {exercise.part === 'leg' && <LegIcon width={42} height={42} />}
               </View>
               <View style={{gap: 8}}>
                 <View style={[style.row, {gap: 4}]}>
-                  {exercise.tags.map((item: any, index: number) => {
-                    return (
-                      <View style={style.tag} key={index}>
-                        <Headline2 style={{color: designToken.color.Green}}>
-                          {item}
-                        </Headline2>
-                      </View>
-                    );
-                  })}
+                  <View style={style.tag}>
+                    <Headline2 style={{color: designToken.color.Green}}>
+                      {exercise.tag}
+                    </Headline2>
+                  </View>
                 </View>
                 <Title2 style={{color: designToken.color.Grary.Gray900}}>
                   {exercise.title}
                 </Title2>
               </View>
             </View>
-            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              style={{flex: 1, marginBottom: 10}}
+              showsVerticalScrollIndicator={false}>
               <View style={{gap: 12, marginBottom: 10}}>
                 {exercise.explains.map((item: any, index: number) => {
                   return (

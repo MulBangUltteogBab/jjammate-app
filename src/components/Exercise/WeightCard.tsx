@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
-import {Image, Modal, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import CardView from '../common/CardView';
 import ArmIcon from '../../assets/icons/arm.svg';
-import CoughingIcon from '../../assets/icons/coughing_alt.svg';
+import BodyIcon from '../../assets/icons/coughing_alt.svg';
 import LegIcon from '../../assets/icons/leg.svg';
 import designToken from '../../assets/design-tokens';
 import Body2 from '../text/Body2';
 import Caption2 from '../text/Caption2';
-import {ExerciseType} from '../../@types/exercise';
-import Header from '../common/Header';
-import Wrap from '../common/Wrap';
+import {Exercise} from '../../@types/exercise';
 import ExplainModal from './ExplainModal';
+import Headline1 from '../text/Headline1';
 
-const WeightCard = (exercise: ExerciseType) => {
+const WeightCard = (exercise: Exercise) => {
   const [visible, setVisible] = useState(false);
   return (
     <>
@@ -27,27 +26,38 @@ const WeightCard = (exercise: ExerciseType) => {
           setVisible(true);
         }}>
         <CardView style={style.container}>
-          <View style={style.iconCover}>
-            {exercise.icon === 'cough' && <CoughingIcon />}
-            {exercise.icon === 'arm' && <ArmIcon />}
-            {exercise.icon === 'leg' && <LegIcon />}
-          </View>
-          <View style={{gap: 8}}>
-            <View style={[style.row, {gap: 4}]}>
-              {exercise.tags.map((item: any, index: number) => {
-                return (
-                  <View style={style.tag} key={index}>
-                    <Caption2 style={{color: designToken.color.Green}}>
-                      {item}
-                    </Caption2>
-                  </View>
-                );
-              })}
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 18}}>
+            <View style={style.iconCover}>
+              {exercise.part === 'body' && <BodyIcon />}
+              {exercise.part === 'arm' && <ArmIcon />}
+              {exercise.part === 'leg' && <LegIcon />}
             </View>
-            <Body2 style={{color: designToken.color.Grary.Black}}>
-              {exercise.title}
-            </Body2>
+            <View style={{gap: 8}}>
+              <View style={[style.row, {gap: 4}]}>
+                <View style={style.tag}>
+                  <Caption2 style={{color: designToken.color.Green}}>
+                    {exercise.tag}
+                  </Caption2>
+                </View>
+              </View>
+              <Body2 style={{color: designToken.color.Grary.Black}}>
+                {exercise.title}
+              </Body2>
+            </View>
           </View>
+          {exercise.done && (
+            <View
+              style={{
+                backgroundColor: 'rgba(33, 195, 137, 0.1)',
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                borderRadius: 4,
+              }}>
+              <Headline1 style={{color: designToken.color.Green}}>
+                완료
+              </Headline1>
+            </View>
+          )}
         </CardView>
       </TouchableOpacity>
     </>
@@ -76,12 +86,11 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
   container: {
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     paddingVertical: 14,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 18,
   },
   iconCover: {
     backgroundColor: 'rgba(33, 195, 137, 0.1)',

@@ -4,14 +4,23 @@ import designToken from '../assets/design-tokens';
 import CustomButton from '../components/common/CustomButton';
 import {useRecoilValue} from 'recoil';
 import {autoLoginState, userCodeSelector} from '../states/setting';
+import {CommonActions} from '@react-navigation/native';
 
 function LaunchScreen({navigation}: any): JSX.Element {
   const autoLogin = useRecoilValue(autoLoginState);
   const userCode = useRecoilValue(userCodeSelector);
 
   useEffect(() => {
-    if (autoLogin && userCode.military_serial_number !== '') {
-      navigation.navigate('MainScreen');
+    if (autoLogin && userCode.military_serial_number != '') {
+      console.log(autoLogin);
+      console.log(userCode.military_serial_number);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'MainScreen'}],
+        }),
+      );
+      // navigation.navigate('MainScreen');
     }
   }, [autoLogin, navigation, userCode]);
 

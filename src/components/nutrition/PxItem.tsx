@@ -5,7 +5,7 @@ import Headline2 from '../text/Headline2';
 import Caption from '../text/Caption';
 import Caption2 from '../text/Caption2';
 import designToken from '../../assets/design-tokens';
-import {PxItemType} from '../../@types/nutrition';
+import {PxFood} from '../../@types/nutrition';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackImage from '../../assets/icons/back.svg';
 import Title3 from '../text/Title3';
@@ -13,21 +13,29 @@ import Wrap from '../common/Wrap';
 import Headline1 from '../text/Headline1';
 import NutrientRatio from './NutrientRatio';
 import CustomButton from '../common/CustomButton';
+import http from '../../utils/http';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {userCodeSelector} from '../../states/setting';
+import showToast from '../../utils/Toast';
+import {trigerAtom} from '../../states/utils';
 
 type PxItemProps = {
-  data: PxItemType;
+  data: PxFood;
 };
 const PxItem = ({data}: PxItemProps) => {
   const [width, setWidth] = useState(0);
   const [isDetail, setIsDetail] = useState(false);
   const insets = useSafeAreaInsets();
+  const code = useRecoilValue(userCodeSelector);
   const handleLayout = (event: any) => {
     const {width} = event.nativeEvent.layout;
     setWidth(width);
   };
-
+  const imageUrl =
+    http.defaults.baseURL + data.image.slice(1, data.image.length);
+  const setTriger = useSetRecoilState(trigerAtom);
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Modal animationType="fade" visible={isDetail}>
         <View style={{height: '100%'}}>
           <TouchableOpacity
@@ -43,7 +51,9 @@ const PxItem = ({data}: PxItemProps) => {
             <BackImage />
           </TouchableOpacity>
           <Image
-            source={require('../../assets/images/test-item.png')}
+            source={{
+              uri: imageUrl,
+            }}
             style={[{width: '100%', height: 300}]}
           />
           <Wrap>
@@ -57,14 +67,47 @@ const PxItem = ({data}: PxItemProps) => {
             <View style={style.hr} />
             <View style={style.modalKcal}>
               <Headline1 style={style.gray900}>🔥 총 열량</Headline1>
-              <Headline1 style={style.gray900}>{data.kcal} kcal</Headline1>
+              <Headline1 style={style.gray900}>{data.calorie} kcal</Headline1>
             </View>
-            {/* <NutrientRatio
-              carbohydrate={data.carbohydrate}
-              protein={data.protein}
-              fat={data.fat}
+            <NutrientRatio
+              nutrition={{
+                taken: {
+                  carbohydrate: data.carbohydrate,
+                  protein: data.protein,
+                  fat: data.fat,
+                },
+                percent: {
+                  carbohydrate: Math.round(
+                    (data.carbohydrate /
+                      Math.max(
+                        1,
+                        data.carbohydrate + data.protein + data.fat,
+                      )) *
+                      100,
+                  ),
+                  protein: Math.round(
+                    (data.protein /
+                      Math.max(
+                        1,
+                        data.carbohydrate + data.protein + data.fat,
+                      )) *
+                      100,
+                  ),
+                  fat: Math.round(
+                    Math.max(
+                      1,
+                      data.fat / (data.carbohydrate + data.protein + data.fat),
+                    ) * 100,
+                  ),
+                },
+                total: {
+                  carbohydrate: 0,
+                  protein: 0,
+                  fat: 0,
+                },
+              }}
               column={true}
-            /> */}
+            />
           </Wrap>
           <View
             style={{
@@ -76,8 +119,18 @@ const PxItem = ({data}: PxItemProps) => {
               <CustomButton
                 title={'추가하기'}
                 activate={true}
-                onPress={() => {
+                onPress={async () => {
                   setIsDetail(false);
+                  try {
+                    await http.post('/diet/api/settakenfood/', {
+                      ...code,
+                      food: data.name,
+                    });
+                    setTriger(pre => pre + 1);
+                    showToast('추가되었습니다.', 'success');
+                  } catch (err) {
+                    console.log(err);
+                  }
                 }}
               />
             </Wrap>
@@ -85,28 +138,31 @@ const PxItem = ({data}: PxItemProps) => {
         </View>
       </Modal>
       <TouchableOpacity
+        style={{flex: 1}}
         onLayout={handleLayout}
         onPress={() => {
           setIsDetail(true);
         }}>
-        <View style={{gap: 8}}>
+        <View style={{gap: 8, flex: 1, justifyContent: 'space-between'}}>
           <Image
-            source={require('../../assets/images/test-item.png')}
+            source={{uri: imageUrl}}
             style={[style.image, {width: width, height: width}]}
           />
           <Headline2 style={style.gray800}>{data.name}</Headline2>
-          <Caption style={style.gray800}>{data.kcal}kcal</Caption>
-          <View style={style.row}>
+          <Caption style={style.gray800}>{data.calorie}kcal</Caption>
+          <View style={[style.row, {flexWrap: 'wrap'}]}>
             <View
               style={[style.tag, {backgroundColor: 'rgba(33, 195, 137, 0.2)'}]}>
-              <Caption2 style={{color: designToken.color.Green}}>
-                {data.carbohydrate.value}
+              <Caption2
+                style={[{color: designToken.color.Green}, {fontSize: 9}]}>
+                탄 {Math.round(data.carbohydrate)}g
               </Caption2>
             </View>
             <View
               style={[style.tag, {backgroundColor: 'rgba(80, 126, 247, 0.2)'}]}>
-              <Caption2 style={{color: designToken.color.Blue}}>
-                {data.protein.value}
+              <Caption2
+                style={[{color: designToken.color.Blue}, {fontSize: 9}]}>
+                단 {Math.round(data.protein)}g
               </Caption2>
             </View>
             <View
@@ -114,8 +170,9 @@ const PxItem = ({data}: PxItemProps) => {
                 style.tag,
                 {backgroundColor: 'rgba(239, 142, 223, 0.2)'},
               ]}>
-              <Caption2 style={{color: designToken.color.Pink}}>
-                {data.fat.value}
+              <Caption2
+                style={[{color: designToken.color.Pink}, {fontSize: 9}]}>
+                지 {Math.round(data.fat)}g
               </Caption2>
             </View>
           </View>
